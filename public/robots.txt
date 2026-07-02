@@ -1,0 +1,6 @@
+# Picsly — allow all crawlers.
+# PLACEHOLDER DOMAIN: update the Sitemap URL when the final domain is chosen.
+User-agent: *
+Allow: /
+
+Sitemap: https://squishh.netlify.app/sitemap.xml

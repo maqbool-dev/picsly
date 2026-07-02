@@ -10,22 +10,6 @@ const base = {
   viewBox: "0 0 24 24",
 };
 
-export function LogoMark({ className = "h-6 w-6" }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <rect x="3" y="3" width="18" height="18" rx="5" className="fill-amber" />
-      <path
-        d="M8 14.5 10.5 12 13 14l3-3.5"
-        stroke="#fff"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <circle cx="9" cy="8.5" r="1.4" fill="#fff" />
-    </svg>
-  );
-}
-
 export function UploadCloud({ className = "h-6 w-6" }) {
   return (
     <svg className={className} {...base} aria-hidden="true">
@@ -108,6 +92,15 @@ export function X({ className = "h-5 w-5" }) {
   return (
     <svg className={className} {...base} aria-hidden="true">
       <path d="M6 6l12 12M18 6 6 18" />
+    </svg>
+  );
+}
+
+export function Convert({ className = "h-5 w-5" }) {
+  return (
+    <svg className={className} {...base} aria-hidden="true">
+      <path d="M7 8h11m0 0-3.5-3.5M18 8l-3.5 3.5" />
+      <path d="M17 16H6m0 0 3.5-3.5M6 16l3.5 3.5" />
     </svg>
   );
 }

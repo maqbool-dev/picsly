@@ -1,4 +1,9 @@
-# Squish — Claude Code Context
+# Picsly — Claude Code Context
+
+> Rebranded from "Squish" to **Picsly**. The GitHub repo (`maqbool-dev/squish`),
+> Docker Hub namespace (`maqbool404/squish`), and Netlify subdomain
+> (`squishh.netlify.app`) are infrastructure identifiers and intentionally
+> still carry the old name — do not treat those as stragglers to rename.
 
 ## What this project is
 A 100% client-side image compressor built with React + Vite + Tailwind CSS.
@@ -19,6 +24,8 @@ Docker Hub: maqbool404/squish
 | Build tool  | Vite 8                                  |
 | Styling     | Tailwind CSS 3                          |
 | Compression | browser-image-compression ^2.0.2        |
+| Conversion  | Canvas API + heic2any (HEIC/HEIF decode, lazy-loaded) |
+| Animation   | motion (`motion/react`) — Framer Motion's successor |
 | Hosting     | Netlify (CI/CD via GitHub — auto-deploy on push) |
 | Container   | Docker Hub maqbool404/squish (manual build + push) |
 | Runtime     | Node.js via Homebrew, Mac Apple Silicon |
@@ -40,12 +47,15 @@ squish/
 │   │   ├── Dropzone.jsx       # Drag-and-drop + file picker UI
 │   │   ├── ResultPreview.jsx  # Stats, savings meter, download button
 │   │   ├── CompareSlider.jsx  # Draggable before/after comparison
-│   │   ├── Features.jsx       # "Why Squish" feature cards
+│   │   ├── Features.jsx       # "Why Picsly" feature cards
 │   │   ├── HowItWorks.jsx     # 3-step explainer section
 │   │   ├── FAQ.jsx            # Accordion FAQ
+│   │   ├── FormatWeaver.jsx   # Client-side JPEG/PNG/WebP conversion (+ HEIC input)
+│   │   ├── FormatPill.jsx     # Reusable format pill (source display / dest select)
 │   │   └── Footer.jsx
 │   ├── utils/
 │   │   ├── compress.js        # Validates file + wraps browser-image-compression
+│   │   ├── convert.js         # Format conversion (canvas) + HEIC decode via heic2any
 │   │   └── format.js          # formatBytes(), formatDims(), formatSavings()
 │   ├── App.jsx                # Assembles all sections in order
 │   ├── main.jsx               # React entry point
@@ -64,27 +74,29 @@ squish/
 ## Design system — do not change these
 
 ### Colors
-All colors are defined as Tailwind tokens in `tailwind.config.js` AND as
-inline constants in components. Keep them in sync if you ever edit one.
+Dark, warm "ember" theme (a redesign replaced the original light/green look —
+do NOT revert to green). Source of truth is `tailwind.config.js`.
 
-| Token       | Hex       | Usage                              |
-|-------------|-----------|------------------------------------|
-| paper       | #F6F5EF   | Page background                    |
-| surface     | #FFFFFF   | Card / panel backgrounds           |
-| ink         | #15160F   | Primary text, buttons              |
-| muted       | #6E6E64   | Secondary text, labels             |
-| line        | #E6E4DA   | Borders, dividers                  |
-| leaf        | #16A34A   | Primary accent (green)             |
-| leafSoft    | #E7F6EC   | Green tinted backgrounds           |
-| amber       | #C2772E   | Warning / error states             |
-| amberSoft   | #F7EEDF   | Warning background tint            |
+| Token        | Value                    | Usage                              |
+|--------------|--------------------------|------------------------------------|
+| paper        | #0E0F0A                  | Page background (deep warm black)  |
+| surface      | #16170F                  | Card / panel backgrounds           |
+| ink          | #F0EFE8                  | Primary text (warm off-white)      |
+| muted        | #9A9A8E                  | Secondary text, labels             |
+| line         | rgba(240,239,232,0.08)   | Borders, dividers                  |
+| amber        | #F5A524 (bright #FFB84D, soft rgba(245,165,36,0.12)) | **Primary accent** — buttons, active/done states, links, savings % |
+| ember        | #F2682C                  | Secondary — gradients, particles, warning state |
+| spark        | #D9342B                  | Deep accent dots                   |
+| hot          | #FFE9C7                  | Hot highlight                      |
+
+There is no green `leaf` token anymore. Errors/warnings use `ember`.
 
 ### Typography
 | Role     | Font               | Usage                              |
 |----------|--------------------|----------------------------------  |
-| display  | Bricolage Grotesque| All headings (h1, h2, h3, feature titles) |
-| body     | Inter              | Paragraphs, general UI text        |
-| mono     | JetBrains Mono     | All numbers, file sizes, stats, labels, badges |
+| display  | Space Grotesk      | All headings (h1, h2, h3, feature titles) — `font-display` |
+| body     | Inter              | Paragraphs, general UI text — `font-sans` |
+| mono     | JetBrains Mono     | All numbers, file sizes, stats, labels, badges — `font-mono` |
 
 **Rule:** any number, measurement, percentage, or filename shown to the user
 must use JetBrains Mono. Never use Inter for numerical data.
@@ -106,9 +118,10 @@ Two shadow levels defined in `tailwind.config.js`:
    `browser-image-compression`. Do not add fetch/axios/API calls for
    image processing under any circumstances.
 
-2. **Accepted input types:** `image/jpeg`, `image/png`, `image/webp` only.
-   HEIC/HEIF conversion is a planned feature — do not add it unless
-   specifically asked.
+2. **Accepted input types:** the **compressor** takes `image/jpeg`,
+   `image/png`, `image/webp` only. The **Format Weaver** additionally accepts
+   HEIC/HEIF *input* (decoded via `heic2any`) — see the Format Weaver note
+   below for the HEIC-in / never-HEIC-out rule.
 
 3. **Max upload size:** 50 MB hard limit enforced in `compress.js`.
 
@@ -121,9 +134,35 @@ Two shadow levels defined in `tailwind.config.js`:
 6. **No icon libraries.** All icons are hand-written inline SVGs in
    `icons.jsx`. Add new icons there in the same style.
 
-7. **Do not change fonts or colors.** The warm paper + green accent
-   visual identity is intentional. Do not substitute system fonts or
-   introduce new accent colors.
+7. **Do not change fonts or colors.** The dark, warm ember/amber visual
+   identity (see Colors / Typography above) is intentional. Do not revert to
+   the old light/green look or introduce new accent hues.
+
+---
+
+## Format Weaver (`FormatWeaver.jsx` + `utils/convert.js`)
+
+Client-side image **format conversion**, a sibling section to the compressor
+(rendered between the upload tool and Features). Converts between JPEG / PNG /
+WebP via the Canvas API, entirely in the browser.
+
+- **HEIC in, never HEIC out — this is intentional, not a bug.** HEIC/HEIF is
+  accepted as *input* (common from iPhones) and decoded to JPEG via `heic2any`
+  before the canvas step. It is deliberately NOT offered as a destination:
+  there is no practical in-browser HEIC/HEVC encoder (H.265 is patent-
+  encumbered). Do not add HEIC to the destination pills or try to "fix" this.
+- `heic2any` is **lazy-loaded** via dynamic `import()` inside `convertImage()`
+  so its ~1.3 MB libheif payload only downloads when a HEIC file is actually
+  converted. Keep it that way.
+- HEIC decode failure throws `HeicDecodeError`, which the UI turns into a
+  plain-language message suggesting the user re-export as JPEG from Photos.
+- **JPEG has no alpha** — `convert.js` paints a white background before
+  `drawImage` so transparent PNG/WebP sources don't convert with a black
+  background. Don't remove that `fillRect`.
+- The ambient burst animation is plain CSS keyframes in `index.css` (inside
+  the `prefers-reduced-motion: no-preference` block); ember particles are not
+  rendered at all under reduced motion. Result reveal + pill/button micro-
+  interactions use `motion/react` (respecting the app's `MotionConfig`).
 
 ---
 
@@ -143,8 +182,8 @@ Two shadow levels defined in `tailwind.config.js`:
 
 - [ ] Capture and log the real mobile error to diagnose the Android bug
 - [ ] Add a compression timeout (30s) with a user-friendly message
-- [ ] HEIC/HEIF input support using `heic2any` (client-side conversion)
-- [ ] Output format selector (keep original / JPEG / PNG / WebP)
+- [x] HEIC/HEIF input support using `heic2any` — shipped in the Format Weaver
+- [x] Format conversion (JPEG / PNG / WebP) — shipped as the Format Weaver
 
 ---
 

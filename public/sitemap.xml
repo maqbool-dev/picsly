@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Single-page site: only the homepage. In-page anchors (#features, #how,
+     #faq) are not separate URLs, so they are intentionally not listed.
+     PLACEHOLDER DOMAIN: update <loc> when the final Picsly domain is chosen. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://squishh.netlify.app/</loc>
+    <lastmod>2026-07-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>

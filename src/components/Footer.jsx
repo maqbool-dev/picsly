@@ -1,4 +1,5 @@
-import { LogoMark, Lock } from "./icons.jsx";
+import logo from "../assets/logo.png";
+import { Lock } from "./icons.jsx";
 
 export default function Footer() {
   return (
@@ -6,8 +7,8 @@ export default function Footer() {
       <div className="container-page flex flex-col items-start justify-between gap-6 py-10 sm:flex-row sm:items-center">
         <div>
           <div className="flex items-center gap-2.5">
-            <LogoMark className="h-6 w-6" />
-            <span className="font-display text-base font-bold tracking-tight">Squish</span>
+            <img src={logo} alt="Picsly" className="logo-glow h-6 w-auto" />
+            <span className="font-display text-base font-bold tracking-tight">Picsly</span>
           </div>
           <p className="mt-2 max-w-xs text-sm text-muted">
             A tiny tool for hitting an exact image size — without handing your
@@ -20,7 +21,7 @@ export default function Footer() {
             <Lock className="h-3.5 w-3.5 text-amber" /> Private by design
           </span>
           <p className="font-mono text-xs text-muted">
-            © {new Date().getFullYear()} Squish — built in the browser.
+            © {new Date().getFullYear()} Picsly — built in the browser.
           </p>
         </div>
       </div>

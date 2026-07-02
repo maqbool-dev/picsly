@@ -5,7 +5,7 @@ const features = [
   {
     icon: Gauge,
     title: "Target-size control",
-    body: "Type the ceiling you need — 500 KB, 2 MB, anything. Squish iterates until the file fits.",
+    body: "Type the ceiling you need — 500 KB, 2 MB, anything. Picsly iterates until the file fits.",
   },
   {
     icon: Resize,
@@ -24,7 +24,7 @@ export default function Features() {
     <section id="features" className="border-t border-line bg-paper py-16 sm:py-20">
       <div className="container-page">
         <FadeUp className="max-w-xl">
-          <p className="eyebrow">Why Squish</p>
+          <p className="eyebrow">Why Picsly</p>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
             Precise where it counts, quiet everywhere else.
           </h2>

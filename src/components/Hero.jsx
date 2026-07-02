@@ -102,7 +102,7 @@ export default function Hero() {
             maxWidth: 360,
           }}
         >
-          Pick a target size — say 2&nbsp;MB — and Squish trims quality and
+          Pick a target size — say 2&nbsp;MB — and Picsly trims quality and
           resolution until your image fits. All in your browser, nothing
           uploaded.
         </FadeUp>

@@ -78,7 +78,7 @@ async function compressCanvas(file, targetBytes, onProgress) {
     onProgress(100);
     const name = file.name.replace(/\.(jpe?g|png|webp)$/i, "");
     const ext = outType === "image/png" ? "png" : outType === "image/webp" ? "webp" : "jpg";
-    return new File([best], `${name}-squished.${ext}`, { type: outType });
+    return new File([best], `${name}-compressed.${ext}`, { type: outType });
   };
 
   // ── Phase 1: quality reduction at full resolution ──
@@ -333,14 +333,14 @@ function H2({ children }) {
 
 function Features() {
   const items = [
-    { Icon: IGauge, t: "Target-size control", b: "Type the ceiling you need — 500 KB, 2 MB, anything. Squish iterates until the file fits." },
+    { Icon: IGauge, t: "Target-size control", b: "Type the ceiling you need — 500 KB, 2 MB, anything. Picsly iterates until the file fits." },
     { Icon: IResize, t: "Smart resolution", b: "When quality alone won't get there, it scales dimensions down too — automatically, never upscaled." },
     { Icon: ILock, t: "Stays on your device", b: "Compression runs locally. Nothing is sent anywhere, ever." },
   ];
   return (
     <section id="features" className="py-16 sm:py-20" style={{ borderTop: `1px solid ${C.line}b3` }}>
       <div className="mx-auto w-full max-w-6xl px-5 sm:px-8">
-        <div className="max-w-xl"><Eyebrow>Why Squish</Eyebrow><H2>Precise where it counts, quiet everywhere else.</H2></div>
+        <div className="max-w-xl"><Eyebrow>Why Picsly</Eyebrow><H2>Precise where it counts, quiet everywhere else.</H2></div>
         <div className="mt-10 grid gap-4 sm:grid-cols-3">
           {items.map(({ Icon, t, b }) => (
             <div key={t} className="p-6" style={{ borderRadius: 20, border: `1px solid ${C.line}`, background: C.surface, boxShadow: "0 1px 2px rgba(21,22,15,0.04),0 12px 28px -12px rgba(21,22,15,0.12)" }}>
@@ -359,7 +359,7 @@ function HowItWorks() {
   const steps = [
     { n: "01", t: "Upload your image", b: "Drag a JPG, PNG, or WebP onto the tool, or browse for one. It loads instantly and stays local." },
     { n: "02", t: "Set your target size", b: "Enter the maximum size you need in megabytes. The default is 2 MB — change it to anything." },
-    { n: "03", t: "Download the result", b: "Squish compresses, shows the savings, and lets you compare quality before you download." },
+    { n: "03", t: "Download the result", b: "Picsly compresses, shows the savings, and lets you compare quality before you download." },
   ];
   return (
     <section id="how" className="py-16 sm:py-20" style={{ borderTop: `1px solid ${C.line}b3`, background: C.paper }}>
@@ -383,7 +383,7 @@ function FAQ() {
   const faqs = [
     { q: "Will my image be uploaded anywhere?", a: "No. Everything happens inside your browser tab. Your image is never sent to a server, which is why it works even offline once the page has loaded." },
     { q: "Which file types can I compress?", a: "JPG, PNG, and WebP. The output stays in the same format as your original so transparency and color are preserved where it matters." },
-    { q: "What if my target size is too small?", a: "Squish compresses as far as it reasonably can. If it can't quite reach your number without destroying the image, it stops at the smallest sensible result and tells you." },
+    { q: "What if my target size is too small?", a: "Picsly compresses as far as it reasonably can. If it can't quite reach your number without destroying the image, it stops at the smallest sensible result and tells you." },
     { q: "Does compressing reduce the resolution?", a: "Only if it has to. It lowers quality first; if that's not enough to hit your target, it scales the dimensions down too. It never enlarges an image." },
   ];
   const [open, setOpen] = useState(0);
@@ -414,7 +414,7 @@ function FAQ() {
 
 export default function App() {
   useEffect(() => {
-    const id = "squish-fonts";
+    const id = "picsly-fonts";
     if (!document.getElementById(id)) {
       const l = document.createElement("link");
       l.id = id; l.rel = "stylesheet";
@@ -428,7 +428,7 @@ export default function App() {
       {/* Header */}
       <header className="sticky top-0 z-40" style={{ borderBottom: `1px solid ${C.line}b3`, background: "rgba(246,245,239,0.8)", backdropFilter: "blur(8px)" }}>
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 sm:px-8">
-          <a href="#top" className="flex items-center gap-2.5"><Logo /><span style={{ fontFamily: "Bricolage Grotesque, sans-serif", fontWeight: 700, fontSize: 18, letterSpacing: "-0.01em" }}>Squish</span></a>
+          <a href="#top" className="flex items-center gap-2.5"><Logo /><span style={{ fontFamily: "Bricolage Grotesque, sans-serif", fontWeight: 700, fontSize: 18, letterSpacing: "-0.01em" }}>Picsly</span></a>
           <nav className="hidden items-center gap-8 text-sm font-medium md:flex" style={{ color: C.muted }}>
             <a href="#features">Features</a><a href="#how">How it works</a><a href="#faq">FAQ</a>
           </nav>
@@ -447,7 +447,7 @@ export default function App() {
                 Hit any file size.<span style={{ display: "block", color: C.leaf }}>Down to the megabyte.</span>
               </h1>
               <p className="mt-5 text-lg leading-relaxed" style={{ color: C.muted }}>
-                Name a number — say 2&nbsp;MB — and Squish keeps trimming quality and resolution until your image lands under it. No quality guesswork, no uploads, no waiting on a server.
+                Name a number — say 2&nbsp;MB — and Picsly keeps trimming quality and resolution until your image lands under it. No quality guesswork, no uploads, no waiting on a server.
               </p>
               <ul className="mt-7 space-y-2.5" style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 14 }}>
                 {["Set an exact target in MB", "Watch it shrink, then download", "Compare quality before you commit"].map((line, i) => (
@@ -473,12 +473,12 @@ export default function App() {
       <footer style={{ borderTop: `1px solid ${C.line}b3`, background: C.paper }}>
         <div className="mx-auto flex w-full max-w-6xl flex-col items-start justify-between gap-6 px-5 py-10 sm:flex-row sm:items-center sm:px-8">
           <div>
-            <div className="flex items-center gap-2.5"><Logo s={24} /><span style={{ fontFamily: "Bricolage Grotesque, sans-serif", fontWeight: 700, fontSize: 16, letterSpacing: "-0.01em" }}>Squish</span></div>
+            <div className="flex items-center gap-2.5"><Logo s={24} /><span style={{ fontFamily: "Bricolage Grotesque, sans-serif", fontWeight: 700, fontSize: 16, letterSpacing: "-0.01em" }}>Picsly</span></div>
             <p className="mt-2 max-w-xs text-sm" style={{ color: C.muted }}>A tiny tool for hitting an exact image size — without handing your photos to a server.</p>
           </div>
           <div className="flex flex-col items-start gap-3 sm:items-end">
             <span className="inline-flex items-center gap-1.5" style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 12, color: C.muted }}><ILock width={14} height={14} style={{ color: C.leaf }} /> Private by design</span>
-            <p style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 12, color: C.muted }}>© {new Date().getFullYear()} Squish — built in the browser.</p>
+            <p style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 12, color: C.muted }}>© {new Date().getFullYear()} Picsly — built in the browser.</p>
           </div>
         </div>
       </footer>

@@ -14,7 +14,7 @@ const steps = [
   {
     n: "03",
     title: "Download the result",
-    body: "Squish compresses, shows the savings, and lets you compare quality before you download.",
+    body: "Picsly compresses, shows the savings, and lets you compare quality before you download.",
   },
 ];
 

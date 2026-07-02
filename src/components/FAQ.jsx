@@ -13,7 +13,7 @@ const faqs = [
   },
   {
     q: "What if my target size is too small?",
-    a: "Squish compresses as far as it reasonably can. If it can't quite reach your number without destroying the image, it stops at the smallest sensible result and tells you.",
+    a: "Picsly compresses as far as it reasonably can. If it can't quite reach your number without destroying the image, it stops at the smallest sensible result and tells you.",
   },
   {
     q: "Does compressing reduce the resolution?",

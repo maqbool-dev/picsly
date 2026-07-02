@@ -41,7 +41,7 @@ export default function CompareSlider({ originalUrl, compressedUrl, dimensions }
         {/* Original (underneath) */}
         <img
           src={originalUrl}
-          alt="Original"
+          alt="Original image, before compression"
           className="absolute inset-0 h-full w-full object-contain"
           draggable={false}
         />
@@ -52,7 +52,7 @@ export default function CompareSlider({ originalUrl, compressedUrl, dimensions }
         >
           <img
             src={compressedUrl}
-            alt="Compressed"
+            alt="Compressed image, after compression"
             className="absolute inset-0 h-full w-full object-contain"
             draggable={false}
           />

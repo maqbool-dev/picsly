@@ -1,12 +1,12 @@
-import { LogoMark } from "./icons.jsx";
+import logo from "../assets/logo.png";
 
 export default function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-paper/80 backdrop-blur-md">
       <div className="container-page flex h-16 items-center justify-between">
         <a href="#top" className="flex items-center gap-2.5">
-          <LogoMark className="h-7 w-7" />
-          <span className="font-display text-lg font-bold tracking-tight">Squish</span>
+          <img src={logo} alt="Picsly" className="logo-glow h-8 w-auto" />
+          <span className="font-display text-lg font-bold tracking-tight">Picsly</span>
         </a>
 
         <nav className="hidden items-center gap-8 text-sm font-medium text-muted md:flex">

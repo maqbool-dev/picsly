@@ -68,7 +68,7 @@ export default function Compressor() {
     }
   }
 
-  // Re-squish a finished result with a new target and/or an explicit max
+  // Re-compress a finished result with a new target and/or an explicit max
   // dimension. Always compresses from the ORIGINAL file, never the compressed
   // one, so quality doesn't degrade with each refine. Stays on the result view.
   async function reCompress() {
@@ -213,7 +213,7 @@ export default function Compressor() {
             targetMB={Number(targetMB)}
           />
 
-          {/* Refine: re-squish from the original with a new target / max size */}
+          {/* Refine: re-compress from the original with a new target / max size */}
           <div className="mt-5 space-y-3 border-t border-line pt-5">
             <div className="grid gap-3 sm:grid-cols-2">
               <label className="block">
@@ -269,10 +269,10 @@ export default function Compressor() {
             >
               {refining ? (
                 <>
-                  <Spinner className="h-5 w-5" /> Re-squishing… {progress}%
+                  <Spinner className="h-5 w-5" /> Re-compressing… {progress}%
                 </>
               ) : (
-                <>Re-squish</>
+                <>Re-compress</>
               )}
             </button>
           </div>

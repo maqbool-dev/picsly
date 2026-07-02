@@ -4,6 +4,7 @@ import Header from "./components/Header.jsx";
 import HeroBackground from "./components/HeroBackground.jsx";
 import Hero from "./components/Hero.jsx";
 import UploadSection from "./components/UploadSection.jsx";
+import FormatWeaver from "./components/FormatWeaver.jsx";
 import Features from "./components/Features.jsx";
 import HowItWorks from "./components/HowItWorks.jsx";
 import FAQ from "./components/FAQ.jsx";
@@ -70,6 +71,7 @@ export default function App() {
         <main className="relative z-[1]">
           <Hero />
           <UploadSection />
+          <FormatWeaver />
           <Features />
           <HowItWorks />
           <FAQ />

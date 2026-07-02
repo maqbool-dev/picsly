@@ -132,7 +132,7 @@ export async function compressImage(file, targetMB, onProgress, maxDimOverride =
   const cleanName = file.name.replace(/\.(jpe?g|png|webp)$/i, "");
   return new File(
     [result],
-    `${cleanName}-squished.${extensionFor(outType)}`,
+    `${cleanName}-compressed.${extensionFor(outType)}`,
     { type: outType }
   );
 }

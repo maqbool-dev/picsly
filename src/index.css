@@ -76,6 +76,13 @@
   .btn-glow:disabled {
     box-shadow: none;
   }
+
+  /* Ambient amber glow for the transparent-PNG logo mark (header/footer).
+     Uses drop-shadow so it follows the mark's alpha, in the same amber value
+     as .btn-glow. The logo PNG intentionally ships without a baked-in glow. */
+  .logo-glow {
+    filter: drop-shadow(0 0 8px rgba(245, 165, 36, 0.5));
+  }
 }
 
 @layer utilities {
@@ -167,6 +174,50 @@
     }
     .count-up {
       animation: countUp 400ms ease-out both;
+    }
+
+    /* f) Format Weaver ambient burst — a breathing glow, a slowly rotating
+       starburst, and drifting embers. Durations come from per-element CSS
+       vars so the component can speed them up while converting. Only defined
+       here (motion OK); under reduced motion these classes carry no animation
+       and the component also skips rendering the ember particles. */
+    @keyframes weaverPulse {
+      0%,
+      100% {
+        opacity: 0.55;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.07);
+      }
+    }
+    @keyframes weaverSpin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    @keyframes weaverEmberRise {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 0;
+      }
+      12% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-150px) scale(0.35);
+        opacity: 0;
+      }
+    }
+    .weaver-pulse {
+      animation: weaverPulse var(--wv-pulse, 3.6s) ease-in-out infinite;
+    }
+    .weaver-spin {
+      animation: weaverSpin var(--wv-spin, 48s) linear infinite;
+    }
+    .weaver-ember {
+      animation: weaverEmberRise var(--wv-dur, 7s) ease-in var(--wv-delay, 0s) infinite;
     }
   }
 

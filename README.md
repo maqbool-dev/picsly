@@ -1,7 +1,7 @@
-# Squish
+# Picsly
 
 Compress any image to an **exact file size** — right in the browser. No uploads,
-no servers, no waiting. Type a target like `2 MB` and Squish trims quality and
+no servers, no waiting. Type a target like `2 MB` and Picsly trims quality and
 resolution until your image fits under it.
 
 Built with **React + Vite + Tailwind CSS** and
@@ -40,7 +40,7 @@ npm run preview  # 4. preview the production build locally
 ```
 squish/
 ├── public/
-│   └── favicon.svg            # browser tab icon
+│   └── favicon-32x32.png …    # app icons (also apple-touch-icon, icon-192/512)
 ├── src/
 │   ├── components/
 │   │   ├── icons.jsx          # inline SVG icon set (no icon library)
@@ -50,7 +50,7 @@ squish/
 │   │   ├── Dropzone.jsx       # drag-and-drop + file picker
 │   │   ├── ResultPreview.jsx  # stats, savings meter, download
 │   │   ├── CompareSlider.jsx  # draggable before/after comparison
-│   │   ├── Features.jsx       # "why Squish" cards
+│   │   ├── Features.jsx       # "why Picsly" cards
 │   │   ├── HowItWorks.jsx     # 3-step explainer
 │   │   ├── FAQ.jsx            # accordion
 │   │   └── Footer.jsx

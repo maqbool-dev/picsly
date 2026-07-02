@@ -2,15 +2,112 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#0E0F0A" />
+
+    <!-- PLACEHOLDER DOMAIN — update canonical, og:url, og:image, twitter:image,
+         the JSON-LD "url", robots.txt Sitemap, and sitemap.xml <loc> once the
+         final Picsly domain is chosen (currently squishh.netlify.app, likely to
+         change with the rebrand). -->
+    <link rel="canonical" href="https://squishh.netlify.app/" />
+
+    <title>Picsly — Compress &amp; Convert Images Online, Free</title>
     <meta
       name="description"
-      content="Squish — compress any image to an exact file size, right in your browser. No uploads, no servers."
+      content="Free online image compressor and converter. Shrink photos to an exact file size or convert JPEG, PNG, and WebP — all in your browser, nothing uploaded."
     />
-    <title>Squish — Compress images to any size</title>
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Picsly" />
+    <meta property="og:title" content="Picsly — Compress &amp; Convert Images Online, Free" />
+    <meta
+      property="og:description"
+      content="Compress images to an exact file size or convert between JPEG, PNG, and WebP — free, private, and 100% in your browser. Nothing is uploaded."
+    />
+    <meta property="og:url" content="https://squishh.netlify.app/" />
+    <!-- Placeholder OG image: the square 512px logo. A dedicated 1200x630 banner
+         would render far better on social cards — see the handoff note. -->
+    <meta property="og:image" content="https://squishh.netlify.app/icon-512.png" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Picsly — Compress &amp; Convert Images Online, Free" />
+    <meta
+      name="twitter:description"
+      content="Compress images to an exact file size or convert between JPEG, PNG, and WebP — free and 100% in your browser."
+    />
+    <meta name="twitter:image" content="https://squishh.netlify.app/icon-512.png" />
+
+    <!-- Structured data: the app itself. No aggregateRating — there's no real
+         rating data, so that field is intentionally omitted. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Picsly",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Any (runs in browser)",
+        "description": "Free, private, browser-based image compressor and converter. Compress images to an exact file size or convert between JPEG, PNG, and WebP with no uploads.",
+        "url": "https://squishh.netlify.app/",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    </script>
+
+    <!-- Structured data: FAQ. Mirrors src/components/FAQ.jsx — keep in sync if
+         the questions change. NOTE: since 2023 Google limits FAQ rich results
+         to authoritative government/health sites, so this likely won't render a
+         visible rich snippet. It's included for general semantic clarity and
+         other consumers — not a guaranteed rich-result win. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Will my image be uploaded anywhere?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Everything happens inside your browser tab using a Web Worker. Your image is never sent to a server, which is why it works even offline once the page has loaded."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which file types can I compress?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "JPG, PNG, and WebP. The output stays in the same format as your original so transparency and color are preserved where it matters."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What if my target size is too small?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Picsly compresses as far as it reasonably can. If it can't quite reach your number without destroying the image, it stops at the smallest sensible result and tells you."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does compressing reduce the resolution?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Only if it has to. It lowers quality first; if that's not enough to hit your target, it scales the dimensions down too. It never enlarges an image."
+            }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
