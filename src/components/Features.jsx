@@ -33,10 +33,7 @@ export default function Features() {
         <div className="mt-10 grid gap-4 sm:grid-cols-3">
           {features.map(({ icon: Icon, title, body }, i) => (
             <FadeUp key={title} delay={i * 0.08}>
-              <div
-                data-glow
-                className="card h-full rounded-xl2 border border-line bg-surface p-6 shadow-card hover:shadow-lift"
-              >
+              <div className="card h-full rounded-xl2 border border-line bg-surface p-6 shadow-card hover:shadow-lift">
                 <span className="grid h-11 w-11 place-items-center rounded-xl bg-amber-soft text-amber">
                   <Icon className="h-5 w-5" />
                 </span>

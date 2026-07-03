@@ -3,6 +3,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { UploadCloud, Download, Lock, X, Warning, Spinner, Convert } from "./icons.jsx";
 import { FadeUp } from "./FadeUp.jsx";
 import FormatPill from "./FormatPill.jsx";
+import { EMBER_COLORS } from "./EmberField.jsx";
 import {
   detectFormat,
   convertImage,
@@ -20,7 +21,8 @@ const FORMATS = [
   { id: "webp", label: "WebP" },
 ];
 const SOURCE_LABEL = { jpeg: "JPEG", png: "PNG", webp: "WebP", heic: "HEIC" };
-const EMBER_COLORS = ["#F5A524", "#F2682C", "#D9342B"]; // amber, ember, spark
+// Particle palette shared with EmberField (mirrors amber/ember/spark tokens).
+const [AMBER, EMBER] = EMBER_COLORS;
 
 // ── Ambient visual ─────────────────────────────────────────────────────────
 // A radial amber/ember glow that pulses behind a slowly rotating starburst,
@@ -66,17 +68,18 @@ function EmberMotes({ active }) {
 function WeaverBurst({ active, reduce }) {
   return (
     <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
-      {/* Breathing glow */}
+      {/* Breathing glow — an inset-0 layer with a `closest-side` radial, so
+          the gradient reaches full transparency before the nearest panel edge
+          at ANY panel size (h-44 on mobile, taller on desktop). The card's
+          overflow-hidden stays intact for its rounded corners. Pulses via
+          opacity ONLY — a scale pulse would push the fade past the edge and
+          bring back the hard clip this replaces. */}
       <div
-        className="weaver-pulse absolute"
+        className="weaver-breathe absolute inset-0"
         style={{
           "--wv-pulse": active ? "1.5s" : "3.6s",
-          width: "72%",
-          aspectRatio: "1 / 1",
-          borderRadius: "9999px",
-          filter: "blur(6px)",
           background:
-            "radial-gradient(circle, rgba(245,165,36,0.22) 0%, rgba(242,104,44,0.13) 45%, transparent 72%)",
+            "radial-gradient(circle closest-side at 50% 50%, rgba(245,165,36,0.14) 0%, rgba(242,104,44,0.07) 50%, transparent 92%)",
         }}
       />
 
@@ -92,9 +95,9 @@ function WeaverBurst({ active, reduce }) {
       >
         <defs>
           <radialGradient id="wvBurst" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#F5A524" stopOpacity="0.9" />
-            <stop offset="55%" stopColor="#F2682C" stopOpacity="0.32" />
-            <stop offset="100%" stopColor="#D9342B" stopOpacity="0" />
+            <stop offset="0%" stopColor={AMBER} stopOpacity="0.9" />
+            <stop offset="55%" stopColor={EMBER} stopOpacity="0.32" />
+            <stop offset="100%" stopColor={EMBER_COLORS[2]} stopOpacity="0" />
           </radialGradient>
         </defs>
         <circle cx="100" cy="100" r="90" fill="url(#wvBurst)" />
@@ -102,18 +105,18 @@ function WeaverBurst({ active, reduce }) {
           className="weaver-spin"
           style={{ "--wv-spin": active ? "12s" : "48s", transformOrigin: "100px 100px" }}
         >
-          <circle cx="100" cy="100" r="72" fill="none" stroke="#F5A524" strokeOpacity="0.28" strokeWidth="1" strokeDasharray="3 7" />
-          <circle cx="100" cy="100" r="54" fill="none" stroke="#F2682C" strokeOpacity="0.3" strokeWidth="1" strokeDasharray="1.5 6" />
+          <circle cx="100" cy="100" r="72" fill="none" stroke={AMBER} strokeOpacity="0.28" strokeWidth="1" strokeDasharray="3 7" />
+          <circle cx="100" cy="100" r="54" fill="none" stroke={EMBER} strokeOpacity="0.3" strokeWidth="1" strokeDasharray="1.5 6" />
         </g>
         <path
           d="M100 54 L110 90 L146 100 L110 110 L100 146 L90 110 L54 100 L90 90 Z"
-          fill="#F5A524"
+          fill={AMBER}
           opacity="0.92"
           className="weaver-pulse"
           style={{
             "--wv-pulse": active ? "1.2s" : "3.6s",
             transformOrigin: "100px 100px",
-            filter: "drop-shadow(0 0 16px #F2682C)",
+            filter: `drop-shadow(0 0 16px ${EMBER})`,
           }}
         />
       </svg>
@@ -175,7 +178,9 @@ export default function FormatWeaver() {
           "We couldn't read that HEIC file. Try re-exporting it as JPEG from Photos (Share → Options → Most Compatible), then convert that."
         );
       } else {
-        setError("Something went wrong converting that image. Please try another file.");
+        setError(
+          "Something went wrong converting that image. Try a smaller file, or convert to JPEG first — it's the most forgiving format."
+        );
       }
       setStatus("error");
     }
@@ -226,8 +231,10 @@ export default function FormatWeaver() {
             <div
               className="relative order-first h-44 md:order-last md:h-auto md:min-h-[22rem] md:border-l md:border-line"
               style={{
+                // Faint corner wash; fades early enough that it carries no
+                // visible value where it meets the card border.
                 background:
-                  "radial-gradient(90% 90% at 70% 25%, rgba(245,165,36,0.10), transparent 60%)",
+                  "radial-gradient(90% 90% at 70% 25%, rgba(245,165,36,0.07), transparent 50%)",
               }}
             >
               <WeaverBurst active={working} reduce={reduce} />
@@ -343,8 +350,10 @@ export default function FormatWeaver() {
                           key={f.id}
                           label={f.label}
                           active={destId === f.id}
-                          dim={f.id === sourceId}
-                          onClick={() => setDestId(f.id)}
+                          dim={f.id === sourceId || working}
+                          onClick={() => {
+                            if (!working) setDestId(f.id);
+                          }}
                         />
                       ))}
                     </div>
@@ -368,7 +377,7 @@ export default function FormatWeaver() {
                   )}
 
                   {error && (
-                    <div className="flex items-start gap-2 rounded-xl border border-amber/30 bg-amber-soft px-4 py-3 text-sm text-amber">
+                    <div className="flex items-start gap-2 rounded-xl border border-ember/30 bg-ember/10 px-4 py-3 text-sm text-ember">
                       <Warning className="mt-0.5 h-4 w-4 flex-shrink-0" />
                       <span>{error}</span>
                     </div>
@@ -395,9 +404,14 @@ export default function FormatWeaver() {
                           </p>
                         </div>
                       </div>
-                      <button type="button" onClick={download} className="btn-primary w-full">
-                        <Download className="h-5 w-5" /> Download {destLabel}
-                      </button>
+                      <div>
+                        <button type="button" onClick={download} className="btn-primary btn-glow w-full">
+                          <Download className="h-5 w-5" /> Download {destLabel}
+                        </button>
+                        <p className="mt-2 truncate text-center font-mono text-[11px] text-muted">
+                          {result.file.name} · {formatBytes(result.file.size)}
+                        </p>
+                      </div>
                       <button type="button" onClick={reset} className="btn-ghost w-full">
                         Convert another image
                       </button>

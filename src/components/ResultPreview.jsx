@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { motion, animate, useReducedMotion } from "motion/react";
 import CompareSlider from "./CompareSlider.jsx";
 import { Download, Check } from "./icons.jsx";
 import { formatBytes, formatDimensions } from "../utils/format.js";
@@ -25,7 +27,7 @@ export default function ResultPreview({ original, compressed, savings, targetMB 
         <div>
           <p className="eyebrow">Result</p>
           <p className="count-up mt-1 font-display text-4xl font-extrabold leading-none tracking-tight text-amber">
-            −{savings}%
+            −<CountUp value={savings} />%
           </p>
           <p className="mt-1 text-sm text-muted">smaller than the original</p>
         </div>
@@ -57,12 +59,40 @@ export default function ResultPreview({ original, compressed, savings, targetMB 
         dimensions={formatDimensions(compressed.dimensions.width, compressed.dimensions.height)}
       />
 
-      <button type="button" onClick={handleDownload} className="btn-primary w-full">
-        <Download className="h-5 w-5" />
-        Download compressed image
-      </button>
+      <div>
+        <button type="button" onClick={handleDownload} className="btn-primary btn-glow w-full">
+          <Download className="h-5 w-5" />
+          Download compressed image
+        </button>
+        <p className="mt-2 truncate text-center font-mono text-[11px] text-muted">
+          {compressed.file.name} · {formatBytes(compressed.file.size)}
+        </p>
+      </div>
     </div>
   );
+}
+
+// Counts the savings % up from 0 when a result lands. Re-runs when the value
+// changes (e.g. after a re-compress). Under reduced motion it renders the
+// final number immediately.
+function CountUp({ value }) {
+  const reduce = useReducedMotion();
+  const [display, setDisplay] = useState(reduce ? value : 0);
+
+  useEffect(() => {
+    if (reduce) {
+      setDisplay(value);
+      return;
+    }
+    const controls = animate(0, value, {
+      duration: 0.9,
+      ease: [0.22, 1, 0.36, 1],
+      onUpdate: (v) => setDisplay(Math.round(v)),
+    });
+    return () => controls.stop();
+  }, [value, reduce]);
+
+  return <>{display}</>;
 }
 
 function Stat({ label, value, sub, accent }) {
@@ -80,9 +110,16 @@ function SizeMeter({ originalBytes, compressedBytes }) {
   return (
     <div>
       <div className="relative h-3 w-full overflow-hidden rounded-full bg-line">
-        <div
-          className="h-full rounded-full bg-amber transition-[width] duration-700 ease-out"
+        {/* Fill animates via transform (scaleX) — GPU-friendly, no layout work.
+            MotionConfig reducedMotion="user" drops the transform animation and
+            renders the final state instantly for reduced-motion users. */}
+        <motion.div
+          key={`${originalBytes}-${compressedBytes}`}
+          className="h-full origin-left rounded-full bg-amber"
           style={{ width: `${ratio}%` }}
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
         />
       </div>
       <div className="mt-1.5 flex justify-between font-mono text-[11px] text-muted">

@@ -7,35 +7,18 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    /* Mirror of the `line` token, exposed for color-mix() in .card proximity. */
+    /* Mirrors of Tailwind tokens, exposed as CSS vars for color-mix() below.
+       If a token changes in tailwind.config.js, update here. */
     --line: rgba(240, 239, 232, 0.08);
+    --amber: #f5a524;
   }
 
   body {
     @apply bg-paper text-ink font-sans antialiased;
   }
 
-  /* Ambient cursor glow — a soft amber light that trails the pointer.
-     Position is driven by --glow-x / --glow-y, set per-frame in App.jsx.
-     Sits behind all page content (the app root is z-10). */
-  body::before {
-    content: "";
-    position: fixed;
-    pointer-events: none;
-    z-index: 0;
-    left: var(--glow-x, 50vw);
-    top: var(--glow-y, 50vh);
-    width: 500px;
-    height: 500px;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    background: radial-gradient(
-      circle,
-      rgba(245, 165, 36, 0.06) 0%,
-      rgba(245, 165, 36, 0.02) 40%,
-      transparent 70%
-    );
-  }
+  /* (The cursor-following spotlight that used to live here as body::before
+     was removed before launch — see the note in App.jsx.) */
 
   /* Visible keyboard focus everywhere */
   :focus-visible {
@@ -90,20 +73,16 @@
      Everything here is gated behind `no-preference` so it only runs for
      users who haven't asked for reduced motion. */
   @media (prefers-reduced-motion: no-preference) {
-    /* a) Card hover lift — gentle rise on hover. The border colour is driven
-       by cursor proximity (--card-proximity, set per-frame in App.jsx):
-       it shifts from `line` toward amber as the cursor approaches. */
+    /* a) Card hover — gentle rise + border warming toward amber. Plain CSS
+       :hover (the old cursor-proximity tint went with the removed pointer
+       tracking); the 60/40 mix matches what full proximity used to show. */
     .card {
-      border-color: color-mix(
-        in srgb,
-        var(--line) calc(100% - calc(var(--card-proximity, 0) * 40%)),
-        #f5a524 calc(var(--card-proximity, 0) * 40%)
-      );
-      transition: transform 200ms ease, border-color 0.15s ease,
+      transition: transform 200ms ease, border-color 0.2s ease,
         box-shadow 200ms ease;
     }
     .card:hover {
       transform: translateY(-2px);
+      border-color: color-mix(in srgb, var(--line) 60%, var(--amber) 40%);
     }
 
     /* b) Dropzone pulse — slow amber-tinted glow while a drag is active. */
@@ -219,6 +198,22 @@
     .weaver-ember {
       animation: weaverEmberRise var(--wv-dur, 7s) ease-in var(--wv-delay, 0s) infinite;
     }
+
+    /* Opacity-only breathing for edge-contained glows (no scale — scaling
+       would push a closest-side gradient past its containing edge). */
+    @keyframes weaverBreathe {
+      0%,
+      100% {
+        opacity: 0.55;
+      }
+      50% {
+        opacity: 1;
+      }
+    }
+    .weaver-breathe {
+      animation: weaverBreathe var(--wv-pulse, 3.6s) ease-in-out infinite;
+    }
+
   }
 
   /* e) Respect reduced motion preferences */

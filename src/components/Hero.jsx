@@ -79,6 +79,9 @@ export default function Hero() {
             margin: 0,
           }}
         >
+          {/* One clean white line; only the per-word entrance stagger animates.
+              (Considered alternatives, on request: "NO UPLOADS." in amber at
+              ~0.7 opacity, or a one-step font-weight bump for emphasis.) */}
           {HEADLINE.map((word, n) => (
             <FadeUp
               as="span"
@@ -108,7 +111,10 @@ export default function Hero() {
         </FadeUp>
 
         <FadeUp as="div" delay={1.05} className="mt-8 max-[900px]:mt-5">
-          <a href="#tool" className="btn-primary btn-glow">
+          <a
+            href="#tool"
+            className="btn-primary btn-glow motion-safe:transition-transform motion-safe:hover:scale-[1.03]"
+          >
             Compress an image
           </a>
         </FadeUp>

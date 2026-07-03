@@ -9,33 +9,27 @@ import { FadeUp } from "./FadeUp.jsx";
 // drifting across the section. Dragging a file over the area intensifies the
 // glow and quickens the embers. Reduced-motion safe — no particles and a
 // static glow when the user prefers reduced motion.
+//
+// NOTE: no cursor-tracking glow in here. The page-wide spotlight (body::before,
+// driven by App.jsx) covers that; a section-scoped one gets clipped into a
+// hard-edged box by this section's overflow-hidden. Every light source below
+// is sized so its blurred extent fades out INSIDE the section at pulse peak.
 function AmbientGlow({ active, reduce }) {
+  // inset-0 + `closest-side` radial: the gradient reaches full transparency
+  // before the section's nearest edge at ANY section height, so the section's
+  // overflow-hidden can never slice it into a hard-edged box. Breathes via
+  // opacity ONLY — blur or a scale pulse would push light past the edge again.
   const base = {
     position: "absolute",
-    left: "50%",
-    top: "50%",
-    transform: "translate(-50%, -50%)",
-    width: "min(720px, 92%)",
-    height: 560,
+    inset: 0,
     zIndex: 0,
-    borderRadius: "9999px",
-    filter: "blur(80px)",
     pointerEvents: "none",
     background:
-      "radial-gradient(circle at 50% 45%, rgba(245,165,36,0.5), rgba(242,104,44,0.2) 45%, transparent 70%)",
+      "radial-gradient(circle closest-side at 50% 50%, rgba(245,165,36,0.32), rgba(242,104,44,0.13) 45%, transparent 95%)",
   };
 
   if (reduce) {
-    return (
-      <div
-        aria-hidden="true"
-        style={{
-          ...base,
-          opacity: active ? 0.5 : 0.32,
-          transform: "translate(-50%, -50%) scale(1.04)",
-        }}
-      />
-    );
+    return <div aria-hidden="true" style={{ ...base, opacity: active ? 0.55 : 0.35 }} />;
   }
 
   return (
@@ -43,10 +37,7 @@ function AmbientGlow({ active, reduce }) {
       aria-hidden="true"
       style={base}
       initial={{ opacity: 0.28 }}
-      animate={{
-        opacity: active ? [0.42, 0.6, 0.42] : [0.25, 0.45, 0.25],
-        scale: active ? [1.04, 1.16, 1.04] : [1, 1.12, 1],
-      }}
+      animate={{ opacity: active ? [0.5, 0.75, 0.5] : [0.3, 0.5, 0.3] }}
       transition={{
         duration: active ? 2.4 : 4,
         ease: "easeInOut",
@@ -63,7 +54,7 @@ export default function UploadSection() {
   return (
     <section
       id="tool"
-      className="relative scroll-mt-24 overflow-hidden bg-paper py-20 sm:py-28"
+      className="relative scroll-mt-24 overflow-hidden bg-paper py-16 sm:py-20"
       onDragOver={(e) => {
         e.preventDefault();
         setDragActive(true);

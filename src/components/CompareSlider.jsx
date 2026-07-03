@@ -1,4 +1,5 @@
 import { useRef, useState, useCallback, useEffect } from "react";
+import { animate, useReducedMotion } from "motion/react";
 
 // Draggable "before / after" comparison. The compressed image sits on top,
 // clipped to the slider position; dragging reveals more or less of it so you
@@ -7,6 +8,8 @@ export default function CompareSlider({ originalUrl, compressedUrl, dimensions }
   const wrapRef = useRef(null);
   const [pos, setPos] = useState(55); // percent revealed of the compressed side
   const [active, setActive] = useState(false);
+  const reduce = useReducedMotion();
+  const hintRef = useRef(null); // running hint animation, cancelled on interaction
 
   const move = useCallback((clientX) => {
     const el = wrapRef.current;
@@ -15,6 +18,52 @@ export default function CompareSlider({ originalUrl, compressedUrl, dimensions }
     const x = ((clientX - rect.left) / rect.width) * 100;
     setPos(Math.min(100, Math.max(0, x)));
   }, []);
+
+  // One-shot discovery hint: shortly after the result appears, the handle
+  // nudges left and settles back so users notice it can be dragged. Skipped
+  // under reduced motion; cancelled immediately if the user grabs the handle.
+  useEffect(() => {
+    if (reduce) return;
+    const timer = setTimeout(() => {
+      hintRef.current = animate(55, 46, {
+        duration: 0.45,
+        ease: "easeInOut",
+        onUpdate: setPos,
+        onComplete: () => {
+          hintRef.current = animate(46, 55, {
+            duration: 0.5,
+            ease: "easeInOut",
+            onUpdate: setPos,
+          });
+        },
+      });
+    }, 700);
+    return () => {
+      clearTimeout(timer);
+      hintRef.current?.stop();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reduce]);
+
+  const grab = () => {
+    hintRef.current?.stop();
+    setActive(true);
+  };
+
+  // Keyboard operation: arrows move the divider, Shift for bigger steps.
+  const onKeyDown = (e) => {
+    const step = e.shiftKey ? 10 : 3;
+    let next = null;
+    if (e.key === "ArrowLeft") next = Math.max(0, pos - step);
+    else if (e.key === "ArrowRight") next = Math.min(100, pos + step);
+    else if (e.key === "Home") next = 0;
+    else if (e.key === "End") next = 100;
+    if (next !== null) {
+      e.preventDefault();
+      hintRef.current?.stop();
+      setPos(next);
+    }
+  };
 
   useEffect(() => {
     if (!active) return;
@@ -73,10 +122,16 @@ export default function CompareSlider({ originalUrl, compressedUrl, dimensions }
         >
           <button
             type="button"
-            aria-label="Drag to compare original and compressed"
-            onMouseDown={() => setActive(true)}
-            onTouchStart={() => setActive(true)}
-            className="grid h-9 w-9 -translate-x-1/2 cursor-ew-resize place-items-center rounded-full border border-line bg-surface text-ink shadow-lift"
+            role="slider"
+            aria-label="Compare original and compressed image"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={Math.round(pos)}
+            aria-orientation="horizontal"
+            onMouseDown={grab}
+            onTouchStart={grab}
+            onKeyDown={onKeyDown}
+            className="grid h-11 w-11 -translate-x-1/2 cursor-ew-resize place-items-center rounded-full border border-line bg-surface text-ink shadow-lift"
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="m9 7-4 5 4 5M15 7l4 5-4 5" />

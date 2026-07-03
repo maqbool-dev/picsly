@@ -32,10 +32,7 @@ export default function HowItWorks() {
         <ol className="mt-10 grid gap-4 sm:grid-cols-3">
           {steps.map((s, i) => (
             <FadeUp as="li" key={s.n} delay={i * 0.08}>
-              <div
-                data-glow
-                className="card h-full rounded-xl2 border border-line bg-surface p-6 shadow-card hover:shadow-lift sm:p-7"
-              >
+              <div className="card h-full rounded-xl2 border border-line bg-surface p-6 shadow-card hover:shadow-lift sm:p-7">
                 <span className="font-mono text-2xl font-semibold text-amber">{s.n}</span>
                 <h3 className="mt-3 font-display text-lg font-bold tracking-tight">{s.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{s.body}</p>

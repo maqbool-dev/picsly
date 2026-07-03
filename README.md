@@ -38,7 +38,7 @@ npm run preview  # 4. preview the production build locally
 ## Project structure
 
 ```
-squish/
+picsly/
 ├── public/
 │   └── favicon-32x32.png …    # app icons (also apple-touch-icon, icon-192/512)
 ├── src/

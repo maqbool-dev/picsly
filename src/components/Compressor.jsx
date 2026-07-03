@@ -63,7 +63,9 @@ export default function Compressor() {
       setStatus("done");
     } catch (err) {
       console.error(err);
-      setError("Something went wrong while compressing. Please try another image.");
+      setError(
+        "Something went wrong while compressing. Try a smaller image or a different format — JPG usually works best."
+      );
       setStatus("error");
     }
   }
@@ -88,7 +90,9 @@ export default function Compressor() {
       setRefineMaxDim("");
     } catch (err) {
       console.error(err);
-      setError("Something went wrong while re-compressing.");
+      setError(
+        "Something went wrong while re-compressing. Try a larger target or leave the max dimension empty."
+      );
     } finally {
       setRefining(false);
       setProgress(0);
@@ -197,7 +201,7 @@ export default function Compressor() {
 
       {/* Error */}
       {error && (
-        <div className="mt-4 flex items-start gap-2 rounded-xl border border-amber/30 bg-amber-soft px-4 py-3 text-sm text-amber">
+        <div className="mt-4 flex items-start gap-2 rounded-xl border border-ember/30 bg-ember/10 px-4 py-3 text-sm text-ember">
           <Warning className="mt-0.5 h-4 w-4 flex-shrink-0" />
           <span>{error}</span>
         </div>

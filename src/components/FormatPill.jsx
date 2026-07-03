@@ -27,6 +27,10 @@ export default function FormatPill({ label, active = false, dim = false, onClick
       onClick={onClick}
       aria-pressed={active}
       className={`${base} cursor-pointer hover:border-amber/50`}
+      // Selected pill pops slightly with a spring; hover/tap stay subtle.
+      // All transform-based, so MotionConfig reducedMotion="user" stills them.
+      animate={{ scale: active ? 1.06 : 1 }}
+      transition={{ type: "spring", stiffness: 500, damping: 28 }}
       whileHover={{ y: -1 }}
       whileTap={{ scale: 0.96 }}
     >
