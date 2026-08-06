@@ -1,36 +1,28 @@
 import { MotionConfig } from "motion/react";
 import Header from "./components/Header.jsx";
-import HeroBackground from "./components/HeroBackground.jsx";
-import Hero from "./components/Hero.jsx";
-import UploadSection from "./components/UploadSection.jsx";
-import FormatWeaver from "./components/FormatWeaver.jsx";
+import Studio from "./components/Studio.jsx";
 import Features from "./components/Features.jsx";
 import HowItWorks from "./components/HowItWorks.jsx";
+import Privacy from "./components/Privacy.jsx";
 import FAQ from "./components/FAQ.jsx";
+import CTA from "./components/CTA.jsx";
 import Footer from "./components/Footer.jsx";
 
 export default function App() {
-  // NOTE: the cursor-following spotlight (rAF loop writing --glow-x/--glow-y,
-  // rendered by a body::before layer) was removed before launch — it didn't
-  // land visually. Card borders now warm on plain CSS :hover instead of
-  // pointer proximity (see .card in index.css). Don't reintroduce a
-  // mouse-tracked glow without a strong reason.
   return (
-    // reducedMotion="user" makes every Motion animation (FadeUp, ambient glow)
-    // automatically drop transforms and keep only opacity when the user asks.
+    // reducedMotion="user" makes every Motion animation drop its transform and
+    // keep only opacity when the user asks for reduced motion. The canvas hero
+    // and the CSS keyframes are gated separately.
     <MotionConfig reducedMotion="user">
-      <div className="relative z-10 min-h-screen">
-        {/* Fixed video/scrim behind everything; hero is transparent over it. */}
-        <HeroBackground />
+      <div id="top" className="min-h-screen bg-paper">
         <Header />
-        {/* main sits above the fixed z-0 background so opaque sections cover it. */}
-        <main className="relative z-[1]">
-          <Hero />
-          <UploadSection />
-          <FormatWeaver />
+        <main>
+          <Studio />
           <Features />
           <HowItWorks />
+          <Privacy />
           <FAQ />
+          <CTA />
         </main>
         <Footer />
       </div>

@@ -1,41 +1,48 @@
 import { FadeUp } from "./FadeUp.jsx";
 
-const steps = [
+const STEPS = [
   {
     n: "01",
-    title: "Upload your image",
-    body: "Drag a JPG, PNG, or WebP onto the tool, or browse for one. It loads instantly and stays local.",
+    title: "Drop your files",
+    body: "Drag them in, click to browse, or paste straight from the clipboard. They stay on your machine.",
   },
   {
     n: "02",
-    title: "Set your target size",
-    body: "Enter the maximum size you need in megabytes. The default is 2 MB — change it to anything.",
+    title: "Set the ceiling",
+    body: "Pick a size limit and an output format. Picsly re-encodes repeatedly until the result fits.",
   },
   {
     n: "03",
-    title: "Download the result",
-    body: "Picsly compresses, shows the savings, and lets you compare quality before you download.",
+    title: "Compare, then download",
+    body: "Inspect it side by side. If it looks right, take it. If not, change the number and run again.",
   },
 ];
 
 export default function HowItWorks() {
   return (
-    <section id="how" className="border-t border-line bg-paper py-16 sm:py-20">
-      <div className="container-page">
-        <FadeUp className="max-w-xl">
-          <p className="eyebrow">How it works</p>
-          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
-            Three steps, start to download.
+    <section
+      id="how"
+      className="border-t border-line px-5 py-14 sm:py-24"
+      style={{ background: "linear-gradient(180deg,#0C0C0B,var(--pl-bg) 60%)" }}
+    >
+      <div className="mx-auto max-w-[1200px]">
+        <FadeUp className="mb-8 flex max-w-[56ch] flex-col gap-3 sm:mb-12">
+          <span className="eyebrow">How it works</span>
+          <h2 className="text-[28px] font-semibold leading-[1.08] tracking-[-0.035em] sm:text-[46px]">
+            Three steps, no sign-up.
           </h2>
         </FadeUp>
 
-        <ol className="mt-10 grid gap-4 sm:grid-cols-3">
-          {steps.map((s, i) => (
+        <ol className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(260px,1fr))]">
+          {STEPS.map((s, i) => (
             <FadeUp as="li" key={s.n} delay={i * 0.08}>
-              <div className="card h-full rounded-xl2 border border-line bg-surface p-6 shadow-card hover:shadow-lift sm:p-7">
-                <span className="font-mono text-2xl font-semibold text-amber">{s.n}</span>
-                <h3 className="mt-3 font-display text-lg font-bold tracking-tight">{s.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{s.body}</p>
+              <div
+                className="flex h-full flex-col gap-3 rounded-2xl border border-line px-6 py-6"
+                style={{ background: "rgba(255,255,255,.015)" }}
+              >
+                <span className="font-mono text-[13px] font-bold text-amber">{s.n}</span>
+                <h3 className="text-xl font-semibold tracking-[-0.02em]">{s.title}</h3>
+                <p className="text-[14.5px] leading-relaxed text-muted">{s.body}</p>
               </div>
             </FadeUp>
           ))}

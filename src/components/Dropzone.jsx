@@ -1,73 +1,88 @@
-import { useRef, useState } from "react";
-import { UploadCloud } from "./icons.jsx";
-import { ACCEPTED_LABEL } from "../utils/compress.js";
+import { Plus, UploadCloud } from "./icons.jsx";
 
-// A single component that handles BOTH drag-and-drop and click-to-browse.
-// It just hands the chosen File back to the parent via `onFile`.
-export default function Dropzone({ onFile, disabled }) {
-  const inputRef = useRef(null);
-  const [dragging, setDragging] = useState(false);
+const INPUT_FORMATS = ["JPEG", "PNG", "WebP", "AVIF", "HEIC"];
 
-  function handleDrop(e) {
-    e.preventDefault();
-    setDragging(false);
-    if (disabled) return;
-    const file = e.dataTransfer.files?.[0];
-    if (file) onFile(file);
-  }
-
-  function handlePick(e) {
-    const file = e.target.files?.[0];
-    if (file) onFile(file);
-    // Reset so picking the same file again still fires onChange.
-    e.target.value = "";
+// Drop / click / paste target. Renders full-size when the queue is empty and a
+// slim "add more" strip once files are loaded. It's a real <button>, so Enter
+// and Space open the picker without any extra keyboard handling.
+export default function Dropzone({ slim, dragOn, onOpen, dragProps }) {
+  if (slim) {
+    return (
+      <button
+        type="button"
+        onClick={onOpen}
+        {...dragProps}
+        className="flex items-center gap-3 rounded-[14px] border border-dashed px-4 py-3.5 text-left transition-colors"
+        style={{
+          borderColor: dragOn ? "rgba(253,176,34,.7)" : "rgba(253,176,34,.3)",
+          background: dragOn ? "rgba(253,176,34,.1)" : "rgba(253,176,34,.03)",
+        }}
+      >
+        <span
+          className="grid h-[34px] w-[34px] flex-none place-items-center rounded-[9px] text-amber-light"
+          style={{ background: "rgba(253,176,34,.12)" }}
+        >
+          <Plus className="h-[18px] w-[18px]" />
+        </span>
+        <span className="text-sm font-semibold text-ink">Add more images</span>
+        <span className="text-[13px] text-subtle">drop, click or paste</span>
+      </button>
+    );
   }
 
   return (
     <button
       type="button"
-      onClick={() => inputRef.current?.click()}
-      onDragOver={(e) => {
-        e.preventDefault();
-        if (!disabled) setDragging(true);
+      onClick={onOpen}
+      {...dragProps}
+      className="relative flex min-h-[190px] flex-col items-center justify-center gap-3.5 rounded-2xl px-5 py-7 text-center sm:min-h-[250px]"
+      style={{
+        border: "1.5px dashed",
+        borderColor: dragOn ? "rgba(253,176,34,.85)" : "rgba(253,176,34,.3)",
+        background: dragOn
+          ? "rgba(253,176,34,.1)"
+          : "radial-gradient(ellipse 70% 100% at 50% 0%,rgba(253,176,34,.07),transparent 70%)",
+        boxShadow: dragOn
+          ? "inset 0 0 80px -20px rgba(253,176,34,.5),0 0 0 4px rgba(253,176,34,.16)"
+          : "none",
+        transition: "border-color .18s, background .18s, box-shadow .18s",
       }}
-      onDragLeave={() => setDragging(false)}
-      onDrop={handleDrop}
-      disabled={disabled}
-      className={`group relative flex w-full flex-col items-center justify-center gap-3 rounded-xl2 border-2 border-dashed px-6 py-10 text-center transition-all
-        ${dragging
-          ? "drag-active border-amber bg-amber-soft"
-          : "border-line bg-paper/60 hover:border-ink/25 hover:bg-paper"}
-        ${disabled ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
     >
-      <span
-        className={`flex h-12 w-12 items-center justify-center rounded-full transition-colors
-          ${dragging ? "bg-amber text-paper" : "bg-surface text-ink shadow-sm group-hover:text-amber"}`}
+      <div
+        className="grid h-[60px] w-[60px] place-items-center rounded-2xl text-amber-light"
+        style={{
+          background:
+            "linear-gradient(180deg,rgba(253,176,34,.18),rgba(253,176,34,.06))",
+          border: "1px solid rgba(253,176,34,.28)",
+          boxShadow: "0 10px 30px -12px rgba(253,176,34,.5)",
+        }}
       >
-        <UploadCloud className="h-6 w-6" />
-      </span>
+        <UploadCloud className="h-[26px] w-[26px]" />
+      </div>
 
-      <span className="space-y-1">
-        <span className="block font-medium text-ink">
-          {dragging ? "Drop to upload" : "Drag an image here"}
-        </span>
-        <span className="block text-sm text-muted">
-          or <span className="font-medium text-amber underline-offset-2 group-hover:underline">browse your files</span>
-        </span>
-      </span>
+      <div className="flex flex-col gap-1.5">
+        <div className="text-lg font-semibold tracking-[-0.02em] text-ink sm:text-[22px]">
+          {dragOn ? "Release to add them" : "Drop your images here"}
+        </div>
+        <div className="text-sm text-subtle">
+          or click to browse — you can also paste with{" "}
+          <kbd className="rounded-md border border-line2 bg-surface2 px-1.5 py-0.5 font-mono text-xs text-muted">
+            ⌘ V
+          </kbd>
+        </div>
+      </div>
 
-      <span className="font-mono text-[11px] uppercase tracking-wider text-muted">
-        {ACCEPTED_LABEL} · up to 50 MB
-      </span>
-
-      <input
-        ref={inputRef}
-        type="file"
-        accept="image/jpeg,image/png,image/webp"
-        onChange={handlePick}
-        className="sr-only"
-        tabIndex={-1}
-      />
+      <div className="flex flex-wrap justify-center gap-1.5">
+        {INPUT_FORMATS.map((f) => (
+          <span
+            key={f}
+            className="rounded-full border border-line px-2.5 py-1 text-[11px] font-semibold tracking-[0.06em] text-subtle"
+            style={{ background: "rgba(255,255,255,.04)" }}
+          >
+            {f}
+          </span>
+        ))}
+      </div>
     </button>
   );
 }

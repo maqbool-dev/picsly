@@ -1,68 +1,70 @@
-import { useState } from "react";
 import { Chevron } from "./icons.jsx";
 import { FadeUp } from "./FadeUp.jsx";
 
-const faqs = [
+// Native <details> — keyboard-operable and open-by-default-less without JS.
+// Keep these in sync with the FAQPage JSON-LD in index.html.
+export const FAQS = [
   {
-    q: "Will my image be uploaded anywhere?",
-    a: "No. Everything happens inside your browser tab using a Web Worker. Your image is never sent to a server, which is why it works even offline once the page has loaded.",
+    q: "How can it compress without uploading anything?",
+    a: "Your browser already knows how to decode and encode images — it does it every time you view a web page. Picsly draws your file onto an off-screen canvas and asks the browser to re-encode it at a chosen quality. The whole loop happens in the tab.",
   },
   {
-    q: "Which file types can I compress?",
-    a: "JPG, PNG, and WebP. The output stays in the same format as your original so transparency and color are preserved where it matters.",
+    q: "Will it land exactly on 200 KB?",
+    a: "It lands as close to your number as it can while staying under it, which is what upload forms actually check. If quality alone cannot get there, Picsly scales the image down in steps until it fits.",
   },
   {
-    q: "What if my target size is too small?",
-    a: "Picsly compresses as far as it reasonably can. If it can't quite reach your number without destroying the image, it stops at the smallest sensible result and tells you.",
+    q: "Which output format should I choose?",
+    a: "WebP is the default because it is small and supported everywhere. Choose JPEG if a form is fussy about file types, PNG when you need lossless or transparency, and AVIF when you want the smallest possible file and control where it will be viewed.",
   },
   {
-    q: "Does compressing reduce the resolution?",
-    a: "Only if it has to. It lowers quality first; if that's not enough to hit your target, it scales the dimensions down too. It never enlarges an image.",
+    q: "Does it remove metadata?",
+    a: "Yes. Because the file is re-encoded from raw pixels, EXIF data — including camera model and GPS coordinates — does not survive the trip.",
+  },
+  {
+    q: "Is there a file size or count limit?",
+    a: "There is no server limit, because there is no server. Picsly takes up to 50 images at a time and up to 50 MB per file, which keeps even a big batch comfortable in your device's memory.",
+  },
+  {
+    q: "Is Picsly free?",
+    a: "Free, with no account and no watermark. Since the work runs on your device, it costs nothing to run.",
   },
 ];
 
 export default function FAQ() {
-  const [open, setOpen] = useState(0);
-
   return (
-    <section id="faq" className="border-t border-line bg-paper py-16 sm:py-20">
-      <div className="container-page max-w-3xl">
-        <FadeUp className="mb-10">
-          <p className="eyebrow">FAQ</p>
-          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
-            Good questions, honest answers.
+    <section id="faq" className="border-t border-line px-5 py-14 sm:py-24">
+      <div className="mx-auto max-w-[820px]">
+        <FadeUp className="mb-6 flex flex-col gap-3 sm:mb-10">
+          <span className="eyebrow">FAQ</span>
+          <h2 className="text-[28px] font-semibold leading-[1.08] tracking-[-0.035em] sm:text-[44px]">
+            Questions people ask
           </h2>
         </FadeUp>
 
-        <FadeUp delay={0.1} className="divide-y divide-line rounded-xl2 border border-line bg-surface">
-          {faqs.map((item, i) => {
-            const isOpen = open === i;
-            return (
-              <div key={item.q}>
-                <button
-                  type="button"
-                  onClick={() => setOpen(isOpen ? -1 : i)}
-                  aria-expanded={isOpen}
-                  className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left"
+        <div className="flex flex-col gap-2.5">
+          {FAQS.map((item) => (
+            <details
+              key={item.q}
+              className="group overflow-hidden rounded-[14px] border border-line bg-surface open:border-amber/35"
+            >
+              <summary className="flex w-full items-center gap-3.5 px-5 py-[18px] text-left text-base font-semibold tracking-[-0.01em] text-ink">
+                <span className="flex-1">{item.q}</span>
+                <span
+                  data-chev
+                  className="grid h-6 w-6 flex-none place-items-center rounded-[7px] text-amber transition-transform duration-200"
+                  style={{ background: "rgba(255,255,255,.05)" }}
                 >
-                  <span className="font-display font-semibold tracking-tight">{item.q}</span>
-                  <Chevron
-                    className={`h-5 w-5 flex-shrink-0 text-muted transition-transform ${isOpen ? "rotate-180" : ""}`}
-                  />
-                </button>
-                <div
-                  className={`grid overflow-hidden transition-all duration-300 ${
-                    isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-                  }`}
-                >
-                  <div className="overflow-hidden">
-                    <p className="px-5 pb-5 text-sm leading-relaxed text-muted">{item.a}</p>
-                  </div>
-                </div>
+                  <Chevron className="h-[15px] w-[15px]" />
+                </span>
+              </summary>
+              <div data-faq-body>
+                <p className="px-5 pb-[18px] text-[14.5px] leading-relaxed text-muted">
+                  {item.a}
+                </p>
               </div>
-            );
-          })}
-        </FadeUp>
+            </details>
+          ))}
+        </div>
       </div>
     </section>
   );

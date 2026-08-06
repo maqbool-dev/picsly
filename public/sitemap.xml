@@ -4,7 +4,7 @@
      PLACEHOLDER DOMAIN: update <loc> when the final Picsly domain is chosen. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://squishh.netlify.app/</loc>
+    <loc>https://picsly.netlify.app/</loc>
     <lastmod>2026-07-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>

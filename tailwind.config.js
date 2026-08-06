@@ -4,32 +4,39 @@ export default {
   theme: {
     extend: {
       colors: {
-        paper: "#0E0F0A",
-        surface: "#16170F",
-        ink: "#F0EFE8",
-        muted: "#9A9A8E",
-        line: "rgba(240,239,232,0.08)",
-        // Warm ember/amber accent system (replaces the old green "leaf").
+        // Untitled UI dark surfaces (warm near-black)
+        paper: "#0A0A09",
+        surface: "#121211",
+        surface2: "#1A1917",
+        surface3: "#211F1A",
+        line: "#26251F",
+        line2: "#37342B",
+        // Text
+        ink: "#FAFAF9",
+        muted: "#A3A3A3",
+        subtle: "#737373",
+        // Accent — Untitled UI "warning" scale
         amber: {
-          DEFAULT: "#F5A524", // primary accent: buttons, savings %, active states, links
-          bright: "#FFB84D", // hover / emphasis
-          soft: "rgba(245,165,36,0.12)", // tinted backgrounds
+          DEFAULT: "#FDB022",
+          deep: "#F79009",
+          light: "#FEC84B",
+          dark: "#DC6803",
         },
-        ember: "#F2682C", // secondary: gradients, warning state, particles
-        spark: "#D9342B", // deep accent dots
-        hot: "#FFE9C7", // hot highlight
+        ok: "#47CD89",
+        err: "#F97066",
       },
       fontFamily: {
-        display: ['"Space Grotesk"', "Inter", "system-ui", "sans-serif"],
-        sans: ["Inter", "system-ui", "sans-serif"],
-        mono: ['"JetBrains Mono"', "ui-monospace", "monospace"],
-      },
-      boxShadow: {
-        card: "0 1px 2px rgba(21,22,15,0.04), 0 12px 28px -12px rgba(21,22,15,0.12)",
-        lift: "0 2px 4px rgba(21,22,15,0.05), 0 24px 48px -16px rgba(21,22,15,0.18)",
+        display: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ['"JetBrains Mono"', "ui-monospace", "Menlo", "monospace"],
       },
       borderRadius: {
         xl2: "1.25rem",
+      },
+      boxShadow: {
+        card: "0 1px 2px rgba(0,0,0,.4)",
+        lift: "0 18px 30px -18px rgba(0,0,0,.9)",
+        panel: "0 48px 90px -40px rgba(0,0,0,.95)",
       },
     },
   },
