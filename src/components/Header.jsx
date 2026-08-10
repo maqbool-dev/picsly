@@ -20,13 +20,8 @@ export default function Header() {
     >
       <div className="container-page flex flex-wrap items-center gap-4 py-3">
         <a href="#top" className="mr-auto flex items-center gap-2.5">
-          <img
-            src={logo}
-            alt="Picsly"
-            className="block h-[30px] w-[30px]"
-            style={{ filter: "drop-shadow(0 2px 10px rgba(253,176,34,.35))" }}
-          />
-          <span className="text-[19px] font-semibold tracking-[-0.03em] text-ink">
+          <img src={logo} alt="Picsly" className="block h-7 w-7" />
+          <span className="text-[17px] font-semibold tracking-[-0.02em] text-ink">
             Picsly
           </span>
         </a>

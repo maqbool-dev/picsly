@@ -32,35 +32,28 @@ export const FAQS = [
 
 export default function FAQ() {
   return (
-    <section id="faq" className="border-t border-line px-5 py-14 sm:py-24">
-      <div className="mx-auto max-w-[820px]">
-        <FadeUp className="mb-6 flex flex-col gap-3 sm:mb-10">
-          <span className="eyebrow">FAQ</span>
-          <h2 className="text-[28px] font-semibold leading-[1.08] tracking-[-0.035em] sm:text-[44px]">
-            Questions people ask
+    <section id="faq" className="border-t border-line px-5 py-16 sm:py-24">
+      <div className="mx-auto max-w-[720px]">
+        <FadeUp className="mb-6 sm:mb-8">
+          <h2 className="text-2xl font-semibold leading-[1.15] tracking-[-0.03em] sm:text-[34px]">
+            Common questions
           </h2>
         </FadeUp>
 
-        <div className="flex flex-col gap-2.5">
+        <div className="flex flex-col divide-y divide-line border-y border-line">
           {FAQS.map((item) => (
-            <details
-              key={item.q}
-              className="group overflow-hidden rounded-[14px] border border-line bg-surface open:border-amber/35"
-            >
-              <summary className="flex w-full items-center gap-3.5 px-5 py-[18px] text-left text-base font-semibold tracking-[-0.01em] text-ink">
+            <details key={item.q} className="group">
+              <summary className="flex w-full items-center gap-4 py-4 text-left text-[15px] font-medium tracking-[-0.01em] text-ink">
                 <span className="flex-1">{item.q}</span>
                 <span
                   data-chev
-                  className="grid h-6 w-6 flex-none place-items-center rounded-[7px] text-amber transition-transform duration-200"
-                  style={{ background: "rgba(255,255,255,.05)" }}
+                  className="flex-none text-subtle transition-transform duration-200"
                 >
-                  <Chevron className="h-[15px] w-[15px]" />
+                  <Chevron className="h-4 w-4" />
                 </span>
               </summary>
               <div data-faq-body>
-                <p className="px-5 pb-[18px] text-[14.5px] leading-relaxed text-muted">
-                  {item.a}
-                </p>
+                <p className="pb-4 pr-8 text-sm leading-relaxed text-muted">{item.a}</p>
               </div>
             </details>
           ))}

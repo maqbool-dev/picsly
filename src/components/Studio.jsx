@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import HeroCanvas from "./HeroCanvas.jsx";
+import HeroGlow from "./HeroGlow.jsx";
 import Dropzone from "./Dropzone.jsx";
 import ToolControls from "./ToolControls.jsx";
 import FileCard from "./FileCard.jsx";
 import SummaryBar from "./SummaryBar.jsx";
 import CompareView from "./CompareView.jsx";
-import { Check } from "./icons.jsx";
 import {
   ACCEPT_ATTR,
   MAX_FILES,
@@ -20,7 +19,7 @@ import {
   searchTarget,
 } from "../utils/imageEngine.js";
 
-const TRUST = ["Nothing uploaded", "No account", "No watermark", "Up to 50 at once"];
+const TRUST = ["No uploads", "No account", "No watermark", "Free"];
 
 const DEFAULTS = {
   mode: "target",
@@ -402,54 +401,24 @@ export default function Studio() {
         tabIndex={-1}
       />
 
-      <section id="tool" className="relative overflow-hidden px-5 pb-9 pt-12 sm:pb-16 sm:pt-24">
-        <HeroCanvas />
+      <section id="tool" className="relative overflow-hidden px-5 pb-12 pt-16 sm:pb-20 sm:pt-28">
+        <HeroGlow />
 
         {/* Hero copy */}
-        <div className="relative mx-auto flex max-w-[900px] flex-col items-center gap-5 text-center">
-          <div
-            className="inline-flex items-center gap-2.5 rounded-full py-1.5 pl-2 pr-3.5 text-[13px] font-medium text-amber-light"
-            style={{
-              border: "1px solid rgba(253,176,34,.28)",
-              background: "rgba(253,176,34,.07)",
-            }}
-          >
-            <span
-              className="pl-pulse ml-1.5 h-[7px] w-[7px] rounded-full bg-ok"
-              style={{ boxShadow: "0 0 0 4px rgba(71,205,137,.16)" }}
-            />
-            Runs entirely in your browser
-          </div>
-
-          <h1 className="max-w-[18ch] text-[38px] font-semibold leading-[1.02] tracking-[-0.04em] sm:text-6xl lg:text-[78px]">
-            Compress any image to an{" "}
-            <span
-              style={{
-                background: "linear-gradient(100deg,#FEC84B,#F79009 70%)",
-                WebkitBackgroundClip: "text",
-                backgroundClip: "text",
-                color: "transparent",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              exact size
-            </span>
-            .
+        <div className="relative mx-auto flex max-w-[640px] flex-col items-center gap-4 text-center">
+          <h1 className="text-[32px] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[46px]">
+            Compress images to an exact size.
           </h1>
 
-          <p className="max-w-[60ch] text-base leading-relaxed text-muted sm:text-lg lg:text-xl">
-            Name your ceiling — 200 KB, 2 MB, whatever the upload form demands.
-            Picsly finds the highest quality that fits under it, without sending
-            your photo anywhere.
+          <p className="max-w-[48ch] text-[15px] leading-relaxed text-muted sm:text-base">
+            Set your limit — 200&nbsp;KB, 2&nbsp;MB, anything. Picsly finds the
+            best quality that fits, entirely in your browser.
           </p>
         </div>
 
         {/* Tool card */}
-        <div className="relative mx-auto mt-7 max-w-[1000px] sm:mt-11">
-          <div
-            className="flex flex-col gap-3.5 rounded-[22px] border border-line p-3.5 shadow-panel sm:p-5"
-            style={{ background: "linear-gradient(180deg,#16150F,#0F0F0E 60%)" }}
-          >
+        <div className="relative mx-auto mt-10 max-w-[720px]">
+          <div className="flex flex-col gap-4">
             <Dropzone
               slim={files.length > 0}
               dragOn={dragOn}
@@ -513,18 +482,10 @@ export default function Studio() {
             )}
           </div>
 
-          {/* Trust row */}
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-            {TRUST.map((t, i) => (
-              <span key={t} className="flex items-center gap-2">
-                {i > 0 && <span className="text-line2">·</span>}
-                <span className="inline-flex items-center gap-[7px] text-[13px] text-subtle">
-                  <Check className="h-[15px] w-[15px] text-ok" />
-                  {t}
-                </span>
-              </span>
-            ))}
-          </div>
+          {/* Trust line — one quiet sentence, no icons */}
+          <p className="mt-5 text-center text-[13px] text-subtle">
+            {TRUST.join(" · ")}
+          </p>
         </div>
       </section>
 

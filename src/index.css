@@ -135,23 +135,14 @@
     @apply text-xs font-semibold uppercase tracking-[0.1em] text-amber;
   }
 
-  /* Primary action — Untitled UI skeuomorphic amber button */
+  /* Primary action — flat amber, no gradient or inner ring */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5
-           text-sm font-semibold transition-[filter,transform] duration-150;
-    border: 1px solid rgba(253, 176, 34, 0.5);
-    background: linear-gradient(180deg, #fdb022, #f79009);
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-amber px-4
+           py-2.5 text-sm font-semibold transition-colors duration-150;
     color: #241703;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.18);
   }
   .btn-primary:hover:not(:disabled) {
-    filter: brightness(1.08);
-    transform: translateY(-1px);
-  }
-  .btn-primary:active:not(:disabled) {
-    transform: translateY(0);
-    filter: brightness(0.96);
+    @apply bg-amber-light;
   }
   .btn-primary:disabled {
     @apply cursor-not-allowed opacity-50;
@@ -159,35 +150,30 @@
 
   /* Secondary / neutral action */
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-line2
-           bg-surface2 px-4 py-2.5 text-sm font-semibold text-ink
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-line
+           bg-transparent px-4 py-2.5 text-sm font-medium text-muted
            transition-colors duration-150;
   }
   .btn-ghost:hover:not(:disabled) {
-    @apply bg-surface3;
-    border-color: #4a4437;
+    @apply border-line2 text-ink;
   }
   .btn-ghost:disabled {
     @apply cursor-not-allowed opacity-50;
   }
 
-  /* Small pill used for units / presets / formats */
+  /* Small quiet pill — the per-card Compare toggle */
   .chip {
-    @apply cursor-pointer rounded-lg border px-3 py-2 text-[13px] font-semibold
-           transition-all duration-150;
+    @apply cursor-pointer rounded-lg border px-2.5 py-1.5 text-[13px] font-medium
+           transition-colors duration-150;
   }
   .chip-on {
-    border-color: rgba(253, 176, 34, 0.55);
-    background: rgba(253, 176, 34, 0.14);
-    color: #fec84b;
+    @apply border-amber/50 text-amber;
   }
   .chip-off {
     @apply border-line text-muted;
-    background: rgba(255, 255, 255, 0.03);
   }
   .chip-off:hover {
-    border-color: rgba(253, 176, 34, 0.5);
-    color: #fec84b;
+    @apply border-line2 text-ink;
   }
 }
 
