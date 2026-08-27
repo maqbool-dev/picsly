@@ -1,46 +1,44 @@
 import logo from "../assets/logo.png";
 import { Upload } from "./icons.jsx";
+import { goTo, openPicker } from "./nav.js";
 
 const NAV = [
-  { href: "#features", label: "Features" },
-  { href: "#how", label: "How it works" },
-  { href: "#privacy", label: "Privacy" },
-  { href: "#faq", label: "FAQ" },
+  ["home", "Compress"],
+  ["faq", "FAQ"],
+  ["privacy", "Privacy"],
 ];
 
-// Studio listens for this so the header / closing CTA can open the file picker
-// without prop drilling through the page.
-export const openPicker = () => window.dispatchEvent(new Event("picsly:browse"));
-
-export default function Header() {
+export default function Header({ page }) {
   return (
-    <header
-      className="sticky top-0 z-[60] border-b border-line backdrop-blur-2xl"
-      style={{ background: "rgba(10,10,9,.78)" }}
-    >
-      <div className="container-page flex flex-wrap items-center gap-4 py-3">
-        <a href="#top" className="mr-auto flex items-center gap-2.5">
-          <img src={logo} alt="Picsly" className="block h-7 w-7" />
-          <span className="text-[17px] font-semibold tracking-[-0.02em] text-ink">
-            Picsly
-          </span>
-        </a>
+    <header className="sticky top-0 z-50 border-b border-line backdrop-blur-xl" style={{ background: "rgba(10,10,9,0.78)" }}>
+      <div className="mx-auto flex max-w-page items-center gap-3 px-4 py-3 sm:gap-4 sm:px-6 lg:px-8">
+        <button
+          type="button"
+          onClick={() => goTo("home")}
+          className="mr-auto flex flex-none items-center gap-[9px] text-ink"
+        >
+          <img src={logo} alt="Picsly" width="27" height="27" className="block h-[27px] w-[27px] object-contain" />
+          <span className="whitespace-nowrap text-base font-semibold tracking-[-0.01em]">Picsly</span>
+        </button>
 
-        <nav className="hidden flex-wrap items-center gap-0.5 sm:flex">
-          {NAV.map((n) => (
-            <a
-              key={n.href}
-              href={n.href}
-              className="rounded-lg px-3 py-2 text-sm font-medium text-muted transition-colors hover:bg-white/5 hover:text-ink"
+        <nav className="hidden items-center gap-0.5 sm:flex">
+          {NAV.map(([key, label]) => (
+            <button
+              key={key}
+              type="button"
+              onClick={() => goTo(key)}
+              aria-current={page === key ? "page" : undefined}
+              className={`nav-btn ${page === key ? "bg-surface2 !text-ink" : ""}`}
             >
-              {n.label}
-            </a>
+              {label}
+            </button>
           ))}
         </nav>
 
-        <button type="button" onClick={openPicker} className="btn-primary">
-          <Upload className="h-4 w-4" />
-          Compress an image
+        <button type="button" onClick={openPicker} className="btn-primary whitespace-nowrap !py-[9px]">
+          <Upload className="h-[15px] w-[15px]" />
+          <span className="hidden sm:inline">Choose images</span>
+          <span className="sm:hidden">Choose</span>
         </button>
       </div>
     </header>

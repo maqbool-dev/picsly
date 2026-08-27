@@ -1,64 +1,54 @@
-import { FadeUp } from "./FadeUp.jsx";
-import { Target, Shield, Layers, Grid, SplitView, Bolt } from "./icons.jsx";
+import { Grid, Shield, Target } from "./icons.jsx";
 
-const FEATURES = [
+const ITEMS = [
   {
     Icon: Target,
-    title: "An exact ceiling",
-    body: "Type 200 KB. Picsly searches quality and scale until it finds the best file that fits underneath.",
+    tone: "text-amber",
+    title: "A real ceiling, not a guess",
+    body: "Type 200 KB. Picsly binary-searches quality, then resolution, until it finds the largest file that still fits underneath. You get the number you were asked for.",
   },
   {
     Icon: Shield,
-    title: "Nothing leaves the tab",
-    body: "Encoding happens on your device. No upload, no queue, no server logs.",
-  },
-  {
-    Icon: Layers,
-    title: "Five formats",
-    body: "JPEG, PNG, WebP and AVIF out. Phone HEIC in, converted to something the web can read.",
+    tone: "text-ok",
+    title: "Your photos stay yours",
+    body: "Encoding happens in this tab, using your own browser and CPU. There is no upload step to trust, no server log to wonder about, and nothing to delete afterwards.",
   },
   {
     Icon: Grid,
-    title: "Fifty at a time",
-    body: "One target applies to the whole batch. Download them one by one or all at once.",
-  },
-  {
-    Icon: SplitView,
-    title: "Check before you keep",
-    body: "A full-resolution split view to weigh the result against the original.",
-  },
-  {
-    Icon: Bolt,
-    title: "Works offline",
-    body: "No round trip. Once the page has loaded, it keeps working on a plane.",
+    tone: "text-amber-light",
+    title: "Fifty files, one pass",
+    body: "Drop a folder of iPhone HEICs and get web-ready WebP back. Change the ceiling afterwards and re-run the whole batch without re-adding a thing.",
   },
 ];
 
 export default function Features() {
   return (
-    <section id="features" className="border-t border-line px-5 py-16 sm:py-24">
-      <div className="mx-auto max-w-[900px]">
-        <FadeUp className="mb-8 flex max-w-[52ch] flex-col gap-3 sm:mb-10">
-          <h2 className="text-2xl font-semibold leading-[1.15] tracking-[-0.03em] sm:text-[34px]">
-            One job, done properly.
+    <section id="features" className="border-t border-line bg-paper2 px-4 py-12 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+      <div className="mx-auto flex max-w-page flex-col gap-7 sm:gap-12">
+        <div data-reveal className="flex max-w-[620px] flex-col gap-3.5">
+          <span className="eyebrow">One job</span>
+          <h2 className="text-[26px] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[38px]">
+            Done properly, on your machine.
           </h2>
-          <p className="text-[15px] text-muted">
-            Most compressors give you a slider and a shrug. Picsly works
-            backwards from the number you actually need.
+          <p className="text-[15px] leading-relaxed text-muted sm:text-base">
+            No queue, no server, no account wall between you and a smaller file.
+            Three things make that possible.
           </p>
-        </FadeUp>
+        </div>
 
-        <div className="grid gap-3 [grid-template-columns:repeat(auto-fit,minmax(250px,1fr))]">
-          {FEATURES.map(({ Icon, title, body }, i) => (
-            <FadeUp key={title} delay={(i % 3) * 0.06}>
-              <div className="flex h-full flex-col gap-3 rounded-xl border border-line p-5 transition-colors hover:border-line2">
-                <span className="text-subtle">
-                  <Icon className="h-5 w-5" />
-                </span>
-                <h3 className="text-[15px] font-semibold tracking-[-0.01em]">{title}</h3>
-                <p className="text-sm leading-relaxed text-muted">{body}</p>
-              </div>
-            </FadeUp>
+        <div className="grid gap-3.5 [grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))]">
+          {ITEMS.map(({ Icon, tone, title, body }) => (
+            <div
+              key={title}
+              data-reveal
+              className="flex flex-col gap-3 rounded-2xl border border-line bg-surface p-5 transition-colors hover:border-line2 sm:p-6"
+            >
+              <span className={`grid h-10 w-10 place-items-center rounded-[11px] border border-line bg-surface2 ${tone}`}>
+                <Icon className="h-[18px] w-[18px]" />
+              </span>
+              <h3 className="text-base font-semibold tracking-[-0.01em]">{title}</h3>
+              <p className="text-sm leading-relaxed text-muted">{body}</p>
+            </div>
           ))}
         </div>
       </div>

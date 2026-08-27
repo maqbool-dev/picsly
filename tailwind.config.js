@@ -4,39 +4,38 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Untitled UI dark surfaces (warm near-black)
-        paper: "#0A0A09",
-        surface: "#121211",
-        surface2: "#1A1917",
-        surface3: "#211F1A",
+        paper: "#0A0A09",      // page
+        paper2: "#0C0C0B",     // alternating section band
+        inset: "#0F0F0E",      // inputs / dropzone well
+        surface: "#121211",    // card
+        surface2: "#1A1917",   // card header, hover
+        surface3: "#211F1A",   // pressed / badge
+        warm: "#16150F",       // file row
         line: "#26251F",
         line2: "#37342B",
-        // Text
+        line3: "#525252",
         ink: "#FAFAF9",
+        ink2: "#D4D4D4",
         muted: "#A3A3A3",
         subtle: "#737373",
-        // Accent — Untitled UI "warning" scale
         amber: {
           DEFAULT: "#FDB022",
-          deep: "#F79009",
           light: "#FEC84B",
-          dark: "#DC6803",
+          deep: "#F79009",
+          ink: "#26180A",      // text on amber
         },
         ok: "#47CD89",
         err: "#F97066",
       },
       fontFamily: {
-        display: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
         sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
         mono: ['"JetBrains Mono"', "ui-monospace", "Menlo", "monospace"],
       },
-      borderRadius: {
-        xl2: "1.25rem",
-      },
+      maxWidth: { page: "1180px" },
       boxShadow: {
-        card: "0 1px 2px rgba(0,0,0,.4)",
-        lift: "0 18px 30px -18px rgba(0,0,0,.9)",
-        panel: "0 48px 90px -40px rgba(0,0,0,.95)",
+        card: "0 48px 90px -40px rgba(0,0,0,0.95)",
+        btn: "0 1px 2px rgba(0,0,0,0.45), inset 0 0 0 1px rgba(0,0,0,0.2)",
       },
     },
   },

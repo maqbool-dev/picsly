@@ -1,92 +1,80 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  :root {
-    /* Mirrors of the Tailwind tokens (tailwind.config.js) for use in raw
-       gradients / shadows / color-mix. Keep the two in sync. */
-    --pl-bg: #0a0a09;
-    --pl-s1: #121211;
-    --pl-s2: #1a1917;
-    --pl-s3: #211f1a;
-    --pl-bd: #26251f;
-    --pl-bd2: #37342b;
-    --pl-tx: #fafaf9;
-    --pl-t2: #a3a3a3;
-    --pl-t3: #737373;
-    --pl-acc: #fdb022;
-    --pl-acc2: #f79009;
-    --pl-acc3: #fec84b;
-    --pl-ok: #47cd89;
-    --pl-err: #f97066;
-  }
-
   html {
     scroll-behavior: smooth;
+    background: #0a0a09;
   }
 
   body {
     @apply bg-paper font-sans text-ink antialiased;
+    margin: 0;
     font-feature-settings: "ss01", "cv11";
-    text-rendering: optimizeLegibility;
-    overflow-x: hidden;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4 {
-    @apply font-display text-ink;
-  }
-
-  p {
-    text-wrap: pretty;
   }
 
   ::selection {
-    background: rgba(253, 176, 34, 0.3);
+    background: rgba(253, 176, 34, 0.26);
     color: #fff;
   }
 
-  /* Amber focus ring, visible on the near-black surfaces */
   *:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 4px rgba(253, 176, 34, 0.22);
+    box-shadow: 0 0 0 3px rgba(253, 176, 34, 0.35);
+    border-radius: 6px;
   }
 
-  /* Quality slider */
+  input,
+  select,
+  button,
+  textarea {
+    font-family: inherit;
+  }
+
+  select {
+    appearance: none;
+  }
+
+  /* Compare slider */
   input[type="range"] {
     -webkit-appearance: none;
     appearance: none;
-    width: 100%;
-    height: 5px;
-    border-radius: 999px;
-    background: linear-gradient(90deg, var(--pl-acc2), var(--pl-acc3));
-    outline: none;
+    background: transparent;
+  }
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 9999px;
+    background: #37342b;
   }
   input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: #fff;
-    border: 3px solid var(--pl-acc2);
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-  }
-  input[type="range"]::-moz-range-thumb {
     width: 16px;
     height: 16px;
-    border-radius: 50%;
-    background: #fff;
-    border: 3px solid var(--pl-acc2);
+    margin-top: -6px;
+    border-radius: 9999px;
+    background: #fdb022;
+    border: 2px solid #0a0a09;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+  }
+  input[type="range"]::-moz-range-track {
+    height: 4px;
+    border-radius: 9999px;
+    background: #37342b;
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 9999px;
+    background: #fdb022;
+    border: 2px solid #0a0a09;
     cursor: pointer;
   }
 
-  /* Target-size number field — no spinners */
+  /* Target-size field — no spinners */
   input[type="number"] {
     -moz-appearance: textfield;
     appearance: textfield;
@@ -96,127 +84,101 @@
     -webkit-appearance: none;
     margin: 0;
   }
-
-  ::-webkit-scrollbar {
-    width: 11px;
-    height: 11px;
-  }
-  ::-webkit-scrollbar-track {
-    background: var(--pl-bg);
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #2e2c25;
-    border-radius: 99px;
-    border: 3px solid var(--pl-bg);
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #453f32;
-  }
-
-  /* FAQ uses native <details> so it works without JS and is keyboard-native */
-  summary {
-    list-style: none;
-    cursor: pointer;
-  }
-  summary::-webkit-details-marker {
-    display: none;
-  }
-  details[open] > summary [data-chev] {
-    transform: rotate(180deg);
-  }
 }
 
 @layer components {
   .container-page {
-    @apply mx-auto w-full max-w-[1200px] px-5 sm:px-6;
+    @apply mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8;
   }
 
   .eyebrow {
-    @apply text-xs font-semibold uppercase tracking-[0.1em] text-amber;
+    @apply text-xs font-semibold uppercase tracking-[0.08em] text-amber;
   }
 
-  /* Primary action — flat amber, no gradient or inner ring */
+  /* Primary amber action */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-amber px-4
-           py-2.5 text-sm font-semibold transition-colors duration-150;
-    color: #241703;
+    @apply inline-flex items-center justify-center gap-[7px] rounded-lg bg-amber
+           px-3.5 py-2.5 text-sm font-semibold text-amber-ink shadow-btn
+           transition-[filter] duration-150;
   }
   .btn-primary:hover:not(:disabled) {
-    @apply bg-amber-light;
+    filter: brightness(1.09);
   }
   .btn-primary:disabled {
     @apply cursor-not-allowed opacity-50;
   }
 
-  /* Secondary / neutral action */
-  .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-line
-           bg-transparent px-4 py-2.5 text-sm font-medium text-muted
-           transition-colors duration-150;
+  /* Neutral outline action */
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg border
+           border-line2 bg-transparent px-3 py-[7px] text-[13px] font-medium
+           text-muted transition-colors duration-150;
   }
-  .btn-ghost:hover:not(:disabled) {
-    @apply border-line2 text-ink;
-  }
-  .btn-ghost:disabled {
-    @apply cursor-not-allowed opacity-50;
+  .btn-outline:hover:not(:disabled) {
+    @apply border-line3 text-ink;
   }
 
-  /* Small quiet pill — the per-card Compare toggle */
-  .chip {
-    @apply cursor-pointer rounded-lg border px-2.5 py-1.5 text-[13px] font-medium
+  /* Nav item in header / footer */
+  .nav-btn {
+    @apply rounded-lg px-[11px] py-[7px] text-sm font-medium text-muted
            transition-colors duration-150;
   }
-  .chip-on {
-    @apply border-amber/50 text-amber;
+  .nav-btn:hover {
+    @apply bg-surface2 text-ink;
   }
-  .chip-off {
-    @apply border-line text-muted;
+
+  /* Native select styled to match the inputs */
+  .field-select {
+    @apply h-[38px] w-full cursor-pointer rounded-[9px] border border-line2
+           bg-inset pl-[11px] pr-[30px] text-[13px] text-ink2 outline-none
+           transition-colors duration-150;
   }
-  .chip-off:hover {
-    @apply border-line2 text-ink;
+  .field-select:hover {
+    @apply border-line3;
   }
 }
 
 @layer utilities {
-  @media (prefers-reduced-motion: no-preference) {
-    @keyframes plSpin {
-      to {
-        transform: rotate(360deg);
+  /* Scroll-driven reveal. Base state is visible, so browsers without
+     animation-timeline (Safari, Firefox) simply show the content. */
+  [data-reveal] {
+    opacity: 1;
+  }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(22px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
       }
-    }
-    @keyframes plPulse {
-      0%,
-      100% {
-        opacity: 0.5;
-        transform: scale(1);
+      [data-reveal] {
+        animation: rise 1s cubic-bezier(0.4, 0, 0.2, 1) both;
+        animation-timeline: view();
+        animation-range: entry 2% cover 24%;
       }
-      50% {
-        opacity: 1;
-        transform: scale(1.06);
-      }
-    }
-    @keyframes plFaqIn {
-      from {
-        opacity: 0;
-        transform: translateY(-6px);
-      }
-      to {
-        opacity: 1;
-        transform: none;
-      }
-    }
-    .pl-spin {
-      animation: plSpin 0.7s linear infinite;
-    }
-    .pl-pulse {
-      animation: plPulse 2.4s ease-in-out infinite;
-    }
-    details[open] > div[data-faq-body] {
-      animation: plFaqIn 0.28s cubic-bezier(0.4, 0, 0.2, 1);
     }
   }
 
-  /* Reduced motion: kill every animation and transition outright. */
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes breathe {
+      0%,
+      100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.3;
+      }
+    }
+    .pl-breathe {
+      animation: breathe 2.6s ease-in-out infinite;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -225,6 +187,11 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.001ms !important;
       scroll-behavior: auto !important;
+    }
+    [data-reveal] {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
     }
   }
 }

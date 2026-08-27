@@ -1,32 +1,26 @@
 import logo from "../assets/logo.png";
+import { goTo } from "./nav.js";
 
 const NAV = [
-  { href: "#features", label: "Features" },
-  { href: "#how", label: "How it works" },
-  { href: "#privacy", label: "Privacy" },
-  { href: "#faq", label: "FAQ" },
+  ["home", "Compress"],
+  ["faq", "FAQ"],
+  ["privacy", "Privacy"],
 ];
 
 export default function Footer() {
   return (
-    <footer className="border-t border-line px-5 py-9" style={{ background: "#0C0C0B" }}>
-      <div className="mx-auto flex max-w-[1200px] flex-wrap items-center gap-5">
+    <footer className="border-t border-line bg-paper2 px-4 py-7 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-page flex-wrap items-center gap-x-4 gap-y-3">
         <div className="flex items-center gap-2.5">
-          <img src={logo} alt="" className="h-6 w-6" />
-          <span className="text-[15px] font-semibold tracking-[-0.02em]">Picsly</span>
-          <span className="text-[13px] text-subtle">
-            — compress and convert, privately.
-          </span>
+          <img src={logo} alt="" width="22" height="22" className="h-[22px] w-[22px] object-contain" />
+          <span className="text-sm font-semibold text-ink">Picsly</span>
+          <span className="text-[13px] text-subtle">— compress images to an exact size</span>
         </div>
-        <div className="flex flex-wrap gap-[18px] sm:ml-auto">
-          {NAV.map((n) => (
-            <a
-              key={n.href}
-              href={n.href}
-              className="text-[13px] text-subtle transition-colors hover:text-ink"
-            >
-              {n.label}
-            </a>
+        <div className="flex gap-1 sm:ml-auto">
+          {NAV.map(([key, label]) => (
+            <button key={key} type="button" onClick={() => goTo(key)} className="nav-btn !text-[13px]">
+              {label}
+            </button>
           ))}
         </div>
       </div>

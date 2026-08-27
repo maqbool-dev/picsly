@@ -15,19 +15,19 @@
          sitemap.xml <loc>. -->
     <link rel="canonical" href="https://picsly.netlify.app/" />
 
-    <title>Picsly — Compress &amp; Convert Images Online, Free</title>
+    <title>Picsly — Compress Images to an Exact File Size, Free</title>
     <meta
       name="description"
-      content="Free online image compressor. Shrink photos to an exact file size — 200 KB, 2 MB, any ceiling — or convert to JPEG, PNG, WebP and AVIF. Batch up to 50 files, all in your browser, nothing uploaded."
+      content="Name your file size and Picsly hits it. Free browser-based image compressor: set a ceiling like 200 KB or 5 MB, batch up to 50 files, output JPEG, PNG, WebP or AVIF. Nothing is uploaded."
     />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Picsly" />
-    <meta property="og:title" content="Picsly — Compress &amp; Convert Images Online, Free" />
+    <meta property="og:title" content="Picsly — Compress Images to an Exact File Size, Free" />
     <meta
       property="og:description"
-      content="Name your ceiling — 200 KB, 2 MB, whatever the form demands — and Picsly finds the highest quality that fits under it. Batch, private, 100% in your browser."
+      content="Name your file size and Picsly hits it. Free browser-based image compressor: set a ceiling like 200 KB or 5 MB, batch up to 50 files, output JPEG, PNG, WebP or AVIF. Nothing is uploaded."
     />
     <meta property="og:url" content="https://picsly.netlify.app/" />
     <!-- Placeholder OG image: the square 512px logo. A dedicated 1200x630 banner
@@ -36,10 +36,10 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Picsly — Compress &amp; Convert Images Online, Free" />
+    <meta name="twitter:title" content="Picsly — Compress Images to an Exact File Size, Free" />
     <meta
       name="twitter:description"
-      content="Compress images to an exact file size, or convert to JPEG, PNG, WebP and AVIF — free, batch, and 100% in your browser."
+      content="Set a size ceiling and Picsly finds the best quality that fits. Free, batch, 100% in your browser."
     />
     <meta name="twitter:image" content="https://picsly.netlify.app/icon-512.png" />
 
@@ -70,11 +70,10 @@
       }
     </script>
 
-    <!-- Structured data: FAQ. Mirrors src/components/FAQ.jsx — keep in sync if
-         the questions change. NOTE: since 2023 Google limits FAQ rich results
-         to authoritative government/health sites, so this likely won't render a
-         visible rich snippet. It's included for general semantic clarity and
-         other consumers — not a guaranteed rich-result win. -->
+    <!-- Structured data: FAQ. Generated from src/components/FaqPage.jsx — if the
+         questions change there, regenerate this block. NOTE: since 2023 Google
+         limits FAQ rich results to authoritative sites, so this likely won't
+         render a visible snippet; it's here for semantic clarity. -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -82,50 +81,58 @@
         "mainEntity": [
           {
             "@type": "Question",
-            "name": "How can it compress without uploading anything?",
+            "name": "Does my image get uploaded anywhere?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Your browser already knows how to decode and encode images — it does it every time you view a web page. Picsly draws your file onto an off-screen canvas and asks the browser to re-encode it at a chosen quality. The whole loop happens in the tab."
+              "text": "No. The compression runs in this browser tab using your own CPU. Turn your connection off after the page loads and it still works — that is the easiest way to prove it."
             }
           },
           {
             "@type": "Question",
-            "name": "Will it land exactly on 200 KB?",
+            "name": "How does it hit an exact size?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "It lands as close to your number as it can while staying under it, which is what upload forms actually check. If quality alone cannot get there, Picsly scales the image down in steps until it fits."
+              "text": "It encodes the image, measures the result, and narrows in: a binary search across quality, up to nine attempts per file. If the ceiling is too tight for quality alone, it reduces the dimensions by 22% and searches again."
             }
           },
           {
             "@type": "Question",
-            "name": "Which output format should I choose?",
+            "name": "Why is my result under the limit rather than exactly on it?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "WebP is the default because it is small and supported everywhere. Choose JPEG if a form is fussy about file types, PNG when you need lossless or transparency, and AVIF when you want the smallest possible file and control where it will be viewed."
+              "text": "Encoders are not perfectly predictable, so Picsly always lands just below your number rather than risking a file that is one byte over and gets rejected."
             }
           },
           {
             "@type": "Question",
-            "name": "Does it remove metadata?",
+            "name": "What about PNG?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes. Because the file is re-encoded from raw pixels, EXIF data — including camera model and GPS coordinates — does not survive the trip."
+              "text": "PNG is lossless, so there is no quality dial to turn. Picsly can only reduce dimensions to reach a ceiling. If the size matters more than the format, switch the output to WebP or JPEG."
             }
           },
           {
             "@type": "Question",
-            "name": "Is there a file size or count limit?",
+            "name": "Can I convert HEIC from my iPhone?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "There is no server limit, because there is no server. Picsly takes up to 50 images at a time and up to 50 MB per file, which keeps even a big batch comfortable in your device's memory."
+              "text": "Yes. Safari decodes HEIC natively, and on Chrome and Firefox Picsly loads a decoder on demand, so iPhone photos convert on every major browser."
             }
           },
           {
             "@type": "Question",
-            "name": "Is Picsly free?",
+            "name": "Is there a limit?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Free, with no account and no watermark. Since the work runs on your device, it costs nothing to run."
+              "text": "Fifty files per batch and 50 MB per file. That cap exists to protect your tab, not to sell you an upgrade."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What does it cost?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Nothing. There is no account, no watermark and no paid tier holding back the good settings."
             }
           }
         ]
